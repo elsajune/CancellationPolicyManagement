@@ -14,8 +14,8 @@ import CancellationPolicyList from "./components/CancellationPolicyList";
 export default function App() {
   return (
     <div className="App">
-      <SideBar />
       <Router>
+      <SideBar />
       <div className="container mt-3">
                     <Switch>
                         <Route exact path={["/", "/cancellationpolicies"]} component={CancellationPolicyList} />

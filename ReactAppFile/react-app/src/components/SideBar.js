@@ -7,6 +7,7 @@ import {
 import cx from "classnames";
 
 import {
+    BrowserRouter as Router,
     Link
 } from "react-router-dom";
 
@@ -23,7 +24,7 @@ const SideBar = () => {
             <button className={"sidebar__button"} onClick={() => setIsOpen(!isOpen)}>
                 <FontAwesomeIcon icon={faBars} />
             </button>
-
+  
             <ul>
                 {menuItems.map(item => (
                     <li key={item.title}>
@@ -40,7 +41,7 @@ const SideBar = () => {
                     </li>
                 ))}
             </ul>
-
+   
         </div>
     );
 };

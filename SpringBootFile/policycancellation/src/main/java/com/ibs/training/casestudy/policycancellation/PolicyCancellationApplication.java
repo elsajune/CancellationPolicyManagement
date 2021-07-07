@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class PolicycancellationApplication {
+public class PolicyCancellationApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PolicycancellationApplication.class, args);
+		SpringApplication.run(PolicyCancellationApplication.class, args);
 	}
 
 }

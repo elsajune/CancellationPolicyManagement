@@ -11,28 +11,28 @@ import java.util.List;
 public class CancellationPolicy {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "Policy_ID")
+    @Column(name = "POLICY_ID")
     private long policyId;
 
-    @Column(name = "Policy_Name")
+    @Column(name = "POLICY_NAME")
     private String policyName;
 
-    @Column(name = "Policy_Description")
+    @Column(name = "POLICY_DESCRIPTION")
     private String policyDescription;
 
-    @Column(name = "Policy_Source")
+    @Column(name = "POLICY_SOURCE")
     private String policySource;
 
-    @Column(name = "Cancel_RestrictionDays")
+    @Column(name = "CANCEL_RESTRICTION_DAYS")
     private int policyCancelRestrictionDays;
 
-    @Column(name = "Cancel_RestrictionHours")
+    @Column(name = "CANCEL_RESTRICTION_HOURS")
     private int policyCancelRestrictionHours;
 
-    @Column(name = "Updated_By")
+    @Column(name = "UPDATED_BY")
     private String policyUpdateBy;
 
-    @Column(name = "Updated_On")
+    @Column(name = "UPDATED_ON")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime policyUpdateOn;
 

@@ -1,2 +1,4 @@
-const Rule = () =>{return(<div>RuleList</div>);}
+const Rule = () =>{return(<div>
+    
+</div>);}
 export default Rule;

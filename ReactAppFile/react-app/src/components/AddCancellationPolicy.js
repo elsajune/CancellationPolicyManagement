@@ -14,7 +14,8 @@ const AddCancellationPolicy = () => {
         policyCancelRestrictionDays: 0,
         policyCancelRestrictionHours: 0,
         policyUpdateBy: "",
-        policyUpdateOn: ""
+        policyUpdateOn: "",
+        rules:[]
     };
 
     //From Redux
@@ -31,6 +32,15 @@ const AddCancellationPolicy = () => {
     const handleInputChange = event => {
         const { name, value } = event.target;
         setPolicy({ ...policy, [name]: value });
+    };
+
+    const handlePolicySource = event => {
+        const { value } = event.target;
+        if (value === "expedia") {
+            setShowRule(true);
+        } else {
+            setShowRule(false);
+        }
     };
 
     const saveCancellationPolicy = () => {
@@ -109,59 +119,59 @@ const AddCancellationPolicy = () => {
                 <div class="card">
                     <div class="card-body">
                         <h6 class="card-subtitle mb-2 text-muted">Policy</h6>
-                        <select class="form-select form-select-sm" aria-label=".form-select-sm example">
-                            <option selected>Open this select menu</option>
-                            <option value="expedia">Expedia</option>
-                            <option value="provider">Provider</option>
-                        </select>
+                        <label>
+                            Policy Provider : 
+                            <select id ="policySource" name ="policySource" onChange={handlePolicySource}>
+                                <option selected>Open this select menu</option>
+                                <option value="expedia">Expedia</option>
+                                <option value="provider">Provider</option>
+                            </select>
+
+                        </label>
+                        {showRule && <Rule />}
                     </div>
-                    <Rule />
                 </div>
 
                 <div class="card">
                     <div class="card-body">
                         <h6 class="card-subtitle mb-2 text-muted">Restrictions</h6>
-                        
-                        <span>
-                            <table >
-                                <tr>
-                                    <td>Stop Cancel Before : </td>
-                                    <td>
-                                        <div className="form-group">
-                                            <label htmlFor="policyCancelRestrictionDays">Days</label>
-                                            <input
-                                                type="number"
-                                                className="form-control"
-                                                id="policyCancelRestrictionDays"
-                                                required
-                                                min="0"
-                                                value={policy.policyCancelRestrictionDays}
-                                                onChange={handleInputChange}
-                                                name="policyCancelRestrictionDays"
-                                            />
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div className="form-group">
-                                            <label htmlFor="policyCancelRestrictionHours">Hours</label>
-                                            <input
-                                                type="number"
-                                                className="form-control"
-                                                id="policyCancelRestrictionHours"
-                                                required
-                                                min="0"
-                                                max="23"
-                                                value={policy.policyCancelRestrictionHours}
-                                                onChange={handleInputChange}
-                                                name="policyCancelRestrictionHours"
-                                            />
-                                        </div>
-                                    </td>
-                                </tr>
-                            </table>
 
-                        </span>
-
+                        <table >
+                            <tr>
+                                <td>Stop Cancel Before : </td>
+                                <td>
+                                    <div className="form-group">
+                                        <label htmlFor="policyCancelRestrictionDays">Days</label>
+                                        <input
+                                            type="number"
+                                            className="form-control"
+                                            id="policyCancelRestrictionDays"
+                                            required
+                                            min="0"
+                                            value={policy.policyCancelRestrictionDays}
+                                            onChange={handleInputChange}
+                                            name="policyCancelRestrictionDays"
+                                        />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className="form-group">
+                                        <label htmlFor="policyCancelRestrictionHours">Hours</label>
+                                        <input
+                                            type="number"
+                                            className="form-control"
+                                            id="policyCancelRestrictionHours"
+                                            required
+                                            min="0"
+                                            max="23"
+                                            value={policy.policyCancelRestrictionHours}
+                                            onChange={handleInputChange}
+                                            name="policyCancelRestrictionHours"
+                                        />
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
 

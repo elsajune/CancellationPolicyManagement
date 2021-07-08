@@ -7,7 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "http://localhost:8081")
+import java.util.ArrayList;
+import java.util.List;
+
+@CrossOrigin(origins = "http://localhost:8083")
 @RestController
 @RequestMapping("/api")
 public class CancellationPolicyController {
@@ -21,6 +24,20 @@ public class CancellationPolicyController {
             CancellationPolicy addedPolicy = cancellationPolicyRepository.save(newPolicy);
             return new ResponseEntity<>(addedPolicy, HttpStatus.CREATED);
         } catch (Exception exception) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/cancellationpolicies")
+    public ResponseEntity<List<CancellationPolicy>> getAllCancellationPolicies(@RequestParam(required = false) String title) {
+        try {
+            List<CancellationPolicy> policies = new ArrayList<CancellationPolicy>();
+            cancellationPolicyRepository.findAll().forEach(policies::add);
+            if (policies.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(policies, HttpStatus.OK);
+        } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

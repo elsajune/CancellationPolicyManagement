@@ -1,0 +1,4 @@
+export const CREATE_POLICY = "CREATE_POLICY";
+export const UPDATE_POLICY = "UPDATE_POLICY";
+export const DELETE_POLICY = "DELETE_POLICY";
+export const RETRIEVE_POLICY = "RETRIEVE_POLICY";

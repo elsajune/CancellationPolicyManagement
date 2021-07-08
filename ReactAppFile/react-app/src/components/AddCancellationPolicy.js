@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createCancellationPolicy } from "../actions/actioncreator";
-import Rule from "./Rule";
+import AddRule from "./AddRule";
 
 const AddCancellationPolicy = () => {
     const intialPolicyState = {
@@ -46,7 +46,10 @@ const AddCancellationPolicy = () => {
     const saveCancellationPolicy = () => {
         //Value added to the DB and the policy that was returned in the response is used to setPolicy
         dispatch(createCancellationPolicy(policy)).then(data => {
-            setPolicy({
+            setPolicy(
+                JSON.parse(JSON.stringify(data))
+                /* Test if above code working
+                {
                 id: data.id,
                 policyName: data.policyName,
                 policyDescription: data.policyDescription,
@@ -55,7 +58,7 @@ const AddCancellationPolicy = () => {
                 policyCancelRestrictionHours: data.policyCancelRestrictionHours,
                 policyUpdateBy: data.policyUpdateBy,
                 policyUpdateOn: data.policyUpdateOn,
-            });
+            }*/);
             setAddedPolicy(true);
         }).catch((error) => {
             console.log(error);
@@ -128,7 +131,7 @@ const AddCancellationPolicy = () => {
                             </select>
 
                         </label>
-                        {showRule && <Rule />}
+                        {showRule && <AddRule />}
                     </div>
                 </div>
 

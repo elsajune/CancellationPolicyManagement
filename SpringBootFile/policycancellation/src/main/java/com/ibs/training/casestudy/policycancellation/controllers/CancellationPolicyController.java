@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:8083")
 @RestController
@@ -40,6 +41,49 @@ public class CancellationPolicyController {
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("/cancellationpolicies/{id}")
+    public ResponseEntity<CancellationPolicy> getAllCancellationPolicyById(@PathVariable("id") long policyId) {
+        Optional<CancellationPolicy> policy = cancellationPolicyRepository.findById(policyId);
+        if (policy.isPresent()) {
+            return new ResponseEntity<>(policy.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/cancellationpolicies/{id}")
+    public ResponseEntity<CancellationPolicy> updateCancellationPolicy(@PathVariable("id") long policyId, @RequestBody CancellationPolicy updatesPolicy) {
+        Optional<CancellationPolicy> policy = cancellationPolicyRepository.findById(policyId).map((selectedPolicy) ->{
+            selectedPolicy.setPolicyId(updatesPolicy.getPolicyId());
+            selectedPolicy.setPolicyName(updatesPolicy.getPolicyName());
+            selectedPolicy.setPolicySource(updatesPolicy.getPolicySource());
+            selectedPolicy.setPolicyDescription(updatesPolicy.getPolicyDescription());
+            selectedPolicy.setPolicyUpdateBy(updatesPolicy.getPolicyUpdateBy());
+            selectedPolicy.setPolicyUpdateOn(updatesPolicy.getPolicyUpdateOn());
+            selectedPolicy.setPolicyCancelRestrictionDays(updatesPolicy.getPolicyCancelRestrictionDays());
+            selectedPolicy.setPolicyCancelRestrictionHours(updatesPolicy.getPolicyCancelRestrictionHours());
+            selectedPolicy.setRules(updatesPolicy.getRules());
+            return cancellationPolicyRepository.save(selectedPolicy);
+        });
+        if (policy.isPresent()) {
+            CancellationPolicy updatedPolicy = policy.get();
+            return new ResponseEntity<>(updatedPolicy, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("/cancellationpolicies/{id}")
+    public ResponseEntity<HttpStatus> deleteCancellationPolicy(@PathVariable("id") long policyId) {
+        try {
+            cancellationPolicyRepository.deleteById(policyId);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
 }

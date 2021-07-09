@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createCancellationPolicy } from "../actions/actioncreator";
 import AddRule from "./AddRule";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const AddCancellationPolicy = () => {
     const intialPolicyState = {
@@ -15,15 +16,26 @@ const AddCancellationPolicy = () => {
         policyCancelRestrictionHours: 0,
         policyUpdateBy: "",
         policyUpdateOn: "",
-        rules:[]
+        rules: []
     };
 
-    //From Redux
+    const intialRuleState = {
+        id: " ",
+        offSetDays: 0,
+        offSetHours: 0,
+        feeBasis: "amount",
+        value: 0,
+        curreny: "",
+        noShow: false,
+        key: Date.now()
+
+    };
+
+    const [rule, setRule] = useState(intialRuleState);
     const [policy, setPolicy] = useState(intialPolicyState);
-    //Local State
     const [addedPolicy, setAddedPolicy] = useState(false);
     const [showRule, setShowRule] = useState(false);
-    const [noShow, setNoShow] = useState(false); //noShow - true ==> disable the offsets
+    const [message, setMessage] = useState("");
 
     //To dispatch action to the store
     const dispatch = useDispatch();
@@ -42,6 +54,22 @@ const AddCancellationPolicy = () => {
             setShowRule(false);
         }
     };
+
+    //handle change in the input and update the rule
+    const handleRuleChange = event => {
+        const { name, value } = event.target;
+        setRule({ ...rule, [name]: value });
+    };
+
+    const createRule = (event) => {
+        const newRule = { ...rule };
+        delete newRule.key;
+        const newRules = [...policy.rules, newRule];
+        //Check setPolicy again
+        setPolicy({ ...policy, [rules]: newRules });
+        setRule(intialRuleState);
+    }
+
 
     const saveCancellationPolicy = () => {
         //Value added to the DB and the policy that was returned in the response is used to setPolicy
@@ -69,6 +97,13 @@ const AddCancellationPolicy = () => {
         setPolicy(intialPolicyState);
         setAddedPolicy(false);
     };
+
+    const deleteRule = () => {
+
+    }
+
+
+
     return (
 
         <div>
@@ -123,17 +158,101 @@ const AddCancellationPolicy = () => {
                     <div class="card-body">
                         <h6 class="card-subtitle mb-2 text-muted">Policy</h6>
                         <label>
-                            Policy Provider : 
-                            <select id ="policySource" name ="policySource" onChange={handlePolicySource}>
+                            Policy Provider :
+                            <select id="policySource" name="policySource" onChange={handlePolicySource}>
                                 <option selected>Open this select menu</option>
                                 <option value="expedia">Expedia</option>
                                 <option value="provider">Provider</option>
                             </select>
 
                         </label>
-                        {showRule && <AddRule />}
+                        {/*Ruleset for the Expedia Policy Proivder*/}
+                        {showRule && (
+                            <div>
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <label htmlFor="offSetDays">Offset Days</label>
+                                                        <input
+                                                            type="number"
+                                                            className="form-control"
+                                                            id="offSetDays"
+                                                            required
+                                                            min="0"
+                                                            value={rule.offSetDays}
+                                                            onChange={handleRuleChange}
+                                                            name="offSetDays"
+                                                        />
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <label htmlFor="offSetHours">Offset Hours</label>
+                                                        <input
+                                                            type="number"
+                                                            className="form-control"
+                                                            id="offSetHours"
+                                                            required
+                                                            min="0"
+                                                            value={rule.offSetHours}
+                                                            onChange={handleRuleChange}
+                                                            name="offSetHours"
+                                                        />
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <label htmlFor="value">Value</label>
+                                                        <input
+                                                            type="number"
+                                                            className="form-control"
+                                                            id="value"
+                                                            required
+                                                            min="0"
+                                                            value={rule.value}
+                                                            onChange={handleRuleChange}
+                                                            name="value"
+                                                        />
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        curreny:
+                                                        <select id="curreny" name="curreny" onChange={handleRuleChange}>
+                                                            <option selected>Open this select menu</option>
+                                                            <option value="USD">USD</option>
+                                                            <option value="INR">INR</option>
+                                                        </select>
+                                                    </label>
+                                                </td>
+                                                <td>
+                                                    <label>
+                                                        No Show:
+                                                        <select id="noShow" name="noShow" onChange={handleRuleChange}>
+                                                            <option selected>Open this select menu</option>
+                                                            <option value="NO">NO</option>
+                                                            <option value="YES">YES</option>
+                                                        </select>
+                                                    </label>
+                                                </td>
+                                                <td>
+                                                    <FontAwesomeIcon className="faicons" onClick={() => {
+                                                        props.deleteItem(item.key)
+                                                    }} icon="trash" />
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </li>
+                                </ul>
+
+                            </div>
+                        )}
                     </div>
                 </div>
+                {/*End of the Ruleset for Expedia */}
 
                 <div class="card">
                     <div class="card-body">

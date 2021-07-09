@@ -3,8 +3,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createCancellationPolicy } from "../actions/actioncreator";
-import AddRule from "./AddRule";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import RuleList from "./RuleList";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+    faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 
 const AddCancellationPolicy = () => {
     const intialPolicyState = {
@@ -56,23 +59,57 @@ const AddCancellationPolicy = () => {
     };
 
     //handle change in the input and update the rule
-    const handleRuleChange = event => {
-        const { name, value } = event.target;
-        setRule({ ...rule, [name]: value });
-    };
+
 
     const createRule = (event) => {
+        event.preventDefault();
         const newRule = { ...rule };
-        delete newRule.key;
         const newRules = [...policy.rules, newRule];
-        //Check setPolicy again
-        setPolicy({ ...policy, [rules]: newRules });
+        //Check this setPolicy again
+        setPolicy({ ...policy, rules: newRules });
         setRule(intialRuleState);
     }
+
+    const handleRuleChange = event => {
+        const { name, value } = event.target;
+        setRule({ ...rule, [name]: value, key: Date.now() });
+    };
+
+    const deleteRule = (key) => {
+        const filteredRules = policy.rules.filter(item =>
+            item.key !== key);
+        setPolicy({
+            ...policy, rules: filteredRules
+        })
+    }
+
+    const updateRule = (rule, key) => {
+        console.log(rule);
+        console.log(key);
+    }
+    /*const updateRule = (rule, key) => {
+        console.log("Rules:" + policy.rules);
+        const updateRules = { ...policy.rules }
+        updateRules.map(item => {
+            if (item.key === key) {
+                    item.id = rule.id,
+                    item.offSetDays = rule.offSetDays,
+                    item.offSetHours = rule.offSetHours,
+                    item.feeBasis = "amount",
+                    item.value = rule.value,
+                    item.curreny = rule.curreny,
+                    item.noShow = rule.noShow
+
+            }
+        })
+        //Check this setting of policy's rules
+        setPolicy({...policy,rules:updateRules})
+    }*/
 
 
     const saveCancellationPolicy = () => {
         //Value added to the DB and the policy that was returned in the response is used to setPolicy
+        policy.rules.map(rule => delete rule.key);
         dispatch(createCancellationPolicy(policy)).then(data => {
             setPolicy(
                 JSON.parse(JSON.stringify(data))
@@ -98,65 +135,65 @@ const AddCancellationPolicy = () => {
         setAddedPolicy(false);
     };
 
-    const deleteRule = () => {
 
-    }
 
 
 
     return (
 
         <div>
-            <div class="alert alert-primary" role="alert">
+            <div className="alert alert-primary" role="alert">
                 Add Car Rental Cancellation Policy
             </div>
             {addedPolicy && (
-                <div class="alert alert-success" role="alert">
+                <div className="alert alert-success" role="alert">
                     You submitted successfully!
-                    <button type="button" class="btn btn-primary btn-sm float-right" onClick={newCancellationPolicy}> Add New Policy</button>
+                    <button type="button" className="btn btn-primary btn-sm float-right" onClick={newCancellationPolicy}> Add New Policy</button>
                 </div>)}
             <div className="submit-form ">
                 <Card>
                     <Card.Body>
-                        <table class="table table-borderless">
-                            <tr>
-                                <td>
-                                    <div className="form-group">
-                                        <label htmlFor="policyName">Policy Name</label>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            id="policyName"
-                                            required
-                                            value={policy.policyName}
-                                            onChange={handleInputChange}
-                                            name="policyName"
-                                        />
-                                    </div>
-                                </td>
-                                <td>
-                                    <div className="form-group">
-                                        <label htmlFor="policyDescription">Policy Description</label>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            id="policyDescription"
-                                            required
-                                            value={policy.policyDescription}
-                                            onChange={handleInputChange}
-                                            name="policyDescription"
-                                        />
-                                    </div>
-                                </td>
+                        <table className="table table-borderless">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div className="form-group">
+                                            <label htmlFor="policyName">Policy Name</label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id="policyName"
+                                                required
+                                                value={policy.policyName}
+                                                onChange={handleInputChange}
+                                                name="policyName"
+                                            />
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div className="form-group">
+                                            <label htmlFor="policyDescription">Policy Description</label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                id="policyDescription"
+                                                required
+                                                value={policy.policyDescription}
+                                                onChange={handleInputChange}
+                                                name="policyDescription"
+                                            />
+                                        </div>
+                                    </td>
 
-                            </tr>
+                                </tr>
+                            </tbody>
                         </table>
                     </Card.Body>
                 </Card>
 
-                <div class="card">
-                    <div class="card-body">
-                        <h6 class="card-subtitle mb-2 text-muted">Policy</h6>
+                <div className="card">
+                    <div className="card-body">
+                        <h6 className="card-subtitle mb-2 text-muted">Policy</h6>
                         <label>
                             Policy Provider :
                             <select id="policySource" name="policySource" onChange={handlePolicySource}>
@@ -168,83 +205,89 @@ const AddCancellationPolicy = () => {
                         </label>
                         {/*Ruleset for the Expedia Policy Proivder*/}
                         {showRule && (
+
                             <div>
-                                <ul class="list-group">
-                                    <li class="list-group-item">
-                                        <table>
-                                            <tr>
-                                                <td>
-                                                    <div className="form-group">
-                                                        <label htmlFor="offSetDays">Offset Days</label>
-                                                        <input
-                                                            type="number"
-                                                            className="form-control"
-                                                            id="offSetDays"
-                                                            required
-                                                            min="0"
-                                                            value={rule.offSetDays}
-                                                            onChange={handleRuleChange}
-                                                            name="offSetDays"
-                                                        />
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="form-group">
-                                                        <label htmlFor="offSetHours">Offset Hours</label>
-                                                        <input
-                                                            type="number"
-                                                            className="form-control"
-                                                            id="offSetHours"
-                                                            required
-                                                            min="0"
-                                                            value={rule.offSetHours}
-                                                            onChange={handleRuleChange}
-                                                            name="offSetHours"
-                                                        />
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="form-group">
-                                                        <label htmlFor="value">Value</label>
-                                                        <input
-                                                            type="number"
-                                                            className="form-control"
-                                                            id="value"
-                                                            required
-                                                            min="0"
-                                                            value={rule.value}
-                                                            onChange={handleRuleChange}
-                                                            name="value"
-                                                        />
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <label>
-                                                        curreny:
-                                                        <select id="curreny" name="curreny" onChange={handleRuleChange}>
-                                                            <option selected>Open this select menu</option>
-                                                            <option value="USD">USD</option>
-                                                            <option value="INR">INR</option>
-                                                        </select>
-                                                    </label>
-                                                </td>
-                                                <td>
-                                                    <label>
-                                                        No Show:
-                                                        <select id="noShow" name="noShow" onChange={handleRuleChange}>
-                                                            <option selected>Open this select menu</option>
-                                                            <option value="NO">NO</option>
-                                                            <option value="YES">YES</option>
-                                                        </select>
-                                                    </label>
-                                                </td>
-                                                <td>
-                                                    <FontAwesomeIcon className="faicons" onClick={() => {
-                                                        props.deleteItem(item.key)
-                                                    }} icon="trash" />
-                                                </td>
-                                            </tr>
-                                        </table>
+                                <RuleList rules={policy.rules} deleteRule={deleteRule} updateRule={updateRule} />
+                                <ul className="list-group">
+                                    <li className="list-group-item">
+                                        <form onSubmit={createRule}>
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <div className="form-group">
+                                                                <label htmlFor="offSetDays">Offset Days</label>
+                                                                <input
+                                                                    type="number"
+                                                                    className="form-control"
+                                                                    id="offSetDays"
+                                                                    required
+                                                                    min="0"
+                                                                    value={rule.offSetDays}
+                                                                    onChange={handleRuleChange}
+                                                                    name="offSetDays"
+                                                                />
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="form-group">
+                                                                <label htmlFor="offSetHours">Offset Hours</label>
+                                                                <input
+                                                                    type="number"
+                                                                    className="form-control"
+                                                                    id="offSetHours"
+                                                                    required
+                                                                    min="0"
+                                                                    value={rule.offSetHours}
+                                                                    onChange={handleRuleChange}
+                                                                    name="offSetHours"
+                                                                />
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div className="form-group">
+                                                                <label htmlFor="value">Value</label>
+                                                                <input
+                                                                    type="number"
+                                                                    className="form-control"
+                                                                    id="value"
+                                                                    required
+                                                                    min="0"
+                                                                    value={rule.value}
+                                                                    onChange={handleRuleChange}
+                                                                    name="value"
+                                                                />
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <label>
+                                                                Curreny:
+                                                                <select id="curreny" name="curreny" onChange={handleRuleChange}>
+                                                                    <option selected>Select</option>
+                                                                    <option value="USD">USD</option>
+                                                                    <option value="INR">INR</option>
+                                                                </select>
+                                                            </label>
+                                                        </td>
+                                                        <td>
+                                                            <label htmlFor="noShow">No Show:</label>
+                                                            <select id="noShow" name="noShow" onChange={handleRuleChange}>
+                                                                <option selected>Select</option>
+                                                                <option value="NO">NO</option>
+                                                                <option value="YES">YES</option>
+                                                            </select>
+
+                                                        </td>
+                                                        <td>
+                                                            <FontAwesomeIcon onClick={deleteRule} icon={faTrash} />
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
+                                            <button type="submit" className="btn btn-primary btn-sm float-right" onClick={handleRuleChange}>+Add Rule</button>
+                                        </form>
+
                                     </li>
                                 </ul>
 
@@ -254,48 +297,52 @@ const AddCancellationPolicy = () => {
                 </div>
                 {/*End of the Ruleset for Expedia */}
 
-                <div class="card">
-                    <div class="card-body">
-                        <h6 class="card-subtitle mb-2 text-muted">Restrictions</h6>
+                <div className="card">
+                    <div className="card-body">
+                        <h6 className="card-subtitle mb-2 text-muted">Restrictions</h6>
 
                         <table >
-                            <tr>
-                                <td>Stop Cancel Before : </td>
-                                <td>
-                                    <div className="form-group">
-                                        <label htmlFor="policyCancelRestrictionDays">Days</label>
-                                        <input
-                                            type="number"
-                                            className="form-control"
-                                            id="policyCancelRestrictionDays"
-                                            required
-                                            min="0"
-                                            value={policy.policyCancelRestrictionDays}
-                                            onChange={handleInputChange}
-                                            name="policyCancelRestrictionDays"
-                                        />
-                                    </div>
-                                </td>
-                                <td>
-                                    <div className="form-group">
-                                        <label htmlFor="policyCancelRestrictionHours">Hours</label>
-                                        <input
-                                            type="number"
-                                            className="form-control"
-                                            id="policyCancelRestrictionHours"
-                                            required
-                                            min="0"
-                                            max="23"
-                                            value={policy.policyCancelRestrictionHours}
-                                            onChange={handleInputChange}
-                                            name="policyCancelRestrictionHours"
-                                        />
-                                    </div>
-                                </td>
-                            </tr>
+                            <tbody>
+                                <tr>
+                                    <td>Stop Cancel Before : </td>
+                                    <td>
+                                        <div className="form-group">
+                                            <label htmlFor="policyCancelRestrictionDays">Days</label>
+                                            <input
+                                                type="number"
+                                                className="form-control"
+                                                id="policyCancelRestrictionDays"
+                                                required
+                                                min="0"
+                                                value={policy.policyCancelRestrictionDays}
+                                                onChange={handleInputChange}
+                                                name="policyCancelRestrictionDays"
+                                            />
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div className="form-group">
+                                            <label htmlFor="policyCancelRestrictionHours">Hours</label>
+                                            <input
+                                                type="number"
+                                                className="form-control"
+                                                id="policyCancelRestrictionHours"
+                                                required
+                                                min="0"
+                                                max="23"
+                                                value={policy.policyCancelRestrictionHours}
+                                                onChange={handleInputChange}
+                                                name="policyCancelRestrictionHours"
+                                            />
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>
+                <button onClick={saveCancellationPolicy} className="btn btn-primary btn-sm float-right">
+                        Add Policy  </button>   
 
             </div>
 

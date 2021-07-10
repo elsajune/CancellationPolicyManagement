@@ -1,0 +1,129 @@
+{
+    "policies": [
+        {
+            "policyId": 1,
+            "policyName": "Completely refundable until pickup hours",
+            "policyDescription": "Flexibility to cancel for Free up to pick up hours",
+            "policySource": "Expedia",
+            "policyCancelRestrictionDays": 0,
+            "policyCancelRestrictionHours": 0,
+            "policyUpdatedBy": "prodrigues",
+            "policyUpdatedOn": "2020-10-14T01:14:00",
+            "rules": [
+                {
+                    "ruleId": 1,
+                    "offsetHours": 0,
+                    "offsetDays": 12,
+                    "feeBasis": "Amount",
+                    "value": 1200,
+                    "currency": "USD",
+                    "noShow": "YES"
+                }
+            ]
+        },
+        {
+            "policyId": 2,
+            "policyName": "Non refundable",
+            "policyDescription": "Non-refundable is which cannot be cancelled immediately after booking",
+            "policySource": "Expedia",
+            "policyCancelRestrictionDays": 0,
+            "policyCancelRestrictionHours": 0,
+            "policyUpdatedBy": "prodrigues",
+            "policyUpdatedOn": "2020-10-14T01:14:00",
+            "rules": [
+                {
+                    "ruleId": 2,
+                    "offsetHours": 0,
+                    "offsetDays": 12,
+                    "feeBasis": "Amount",
+                    "value": 1200,
+                    "currency": "USD",
+                    "noShow": "NO"
+                }
+            ]
+        },
+        {
+            "policyId": 3,
+            "policyName": "Completely refundable",
+            "policyDescription": "No_show policy.Free 50USD applicable if cancelled after 24hrs before pickup.cc requires",
+            "policySource": "Expedia",
+            "policyCancelRestrictionDays": 0,
+            "policyCancelRestrictionHours": 0,
+            "policyUpdatedBy": "prodrigues",
+            "policyUpdatedOn": "2020-10-14T01:14:00",
+            "rules": [
+                {
+                    "ruleId": 3,
+                    "offsetHours": 0,
+                    "offsetDays": 12,
+                    "feeBasis": "Amount",
+                    "value": 1200,
+                    "currency": "USD",
+                    "noShow": "NO"
+                }
+            ]
+        },
+        {
+            "policyId": 4,
+            "policyName": "Budget NoShow PostPay",
+            "policyDescription": "No show policy for Budget cc required rates",
+            "policySource": "Provider",
+            "policyCancelRestrictionDays": 4,
+            "policyCancelRestrictionHours": 5,
+            "policyUpdatedBy": "testA",
+            "policyUpdatedOn": "2020-10-14T01:14:00",
+            "rules": []
+        },
+        {
+            "policyId": 5,
+            "policyName": "Avis No_show_PostPay",
+            "policyDescription": "No_show policy.Free 50USD applicable if cancelled after 24hrs before pickup.cc requires",
+            "policySource": "Expedia",
+            "policyCancelRestrictionDays": 0,
+            "policyCancelRestrictionHours": 0,
+            "policyUpdatedBy": "prodrigues",
+            "policyUpdatedOn": "2020-10-14T01:14:00",
+            "rules": [
+                {
+                    "ruleId": 4,
+                    "offsetHours": 0,
+                    "offsetDays": 12,
+                    "feeBasis": "Amount",
+                    "value": 1200,
+                    "currency": "USD",
+                    "noShow": "YES"
+                }
+            ]
+        },
+        {
+            "policyId": 6,
+            "policyName": "policyTest",
+            "policyDescription": "Test Description",
+            "policySource": "Expedia",
+            "policyCancelRestrictionDays": 0,
+            "policyCancelRestrictionHours": 0,
+            "policyUpdatedBy": "prodrigues",
+            "policyUpdatedOn": "2020-10-14T01:14:00",
+            "rules": [
+                {
+                    "ruleId": 5,
+                    "offsetHours": 0,
+                    "offsetDays": 12,
+                    "feeBasis": "Amount",
+                    "value": 1200,
+                    "currency": "USD",
+                    "noShow": "YES"
+                },
+                {
+                    "ruleId": 6,
+                    "offsetHours": 0,
+                    "offsetDays": 12,
+                    "feeBasis": "Amount",
+                    "value": 1200,
+                    "currency": "USD",
+                    "noShow": "YES"
+                }
+            ]
+        }
+    ]
+}

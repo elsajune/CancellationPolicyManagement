@@ -8,7 +8,7 @@ import Rule from "./Rule";
 
 const AddRule = () => {
     const intialRuleState = {
-        id: " ",
+        ruleId: 0,
         offSetDays: 0,
         offSetHours: 0,
         feeBasis: "amount",

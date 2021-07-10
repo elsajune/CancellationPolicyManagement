@@ -11,7 +11,7 @@ import {
 
 const AddCancellationPolicy = () => {
     const intialPolicyState = {
-        id: " ",
+        policyId: 0,
         policyName: "Enter policy name",
         policyDescription: "Enter policy Descritpion",
         policySource: "",
@@ -23,7 +23,7 @@ const AddCancellationPolicy = () => {
     };
 
     const intialRuleState = {
-        id: " ",
+        ruleId: 0,
         offSetDays: 0,
         offSetHours: 0,
         feeBasis: "amount",

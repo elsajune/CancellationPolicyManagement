@@ -14,7 +14,7 @@ const AddRule = () => {
         feeBasis: "amount",
         value: 0,
         curreny: "",
-        noShow: false,
+        noShow: "",
 
     };
 

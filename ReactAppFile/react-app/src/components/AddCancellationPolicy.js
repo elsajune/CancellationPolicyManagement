@@ -28,8 +28,8 @@ const AddCancellationPolicy = () => {
         offSetHours: 0,
         feeBasis: "amount",
         value: 0,
-        curreny: "",
-        noShow: false,
+        curreny: " ",
+        noShow: " ",
         key: Date.now()
 
     };
@@ -151,11 +151,11 @@ const AddCancellationPolicy = () => {
             <form className="d-grid gap-3">
                 <Card bg="light">
                     <Card.Body>
-                        <div class="container">
-                            <div class="row row-cols-2">
+                        <div className="container">
+                            <div className="row row-cols-2">
 
                                 <div className="col">
-                                    <div class="form-floating">
+                                    <div className="form-floating">
                                         <input
                                             type="text"
                                             className="form-control"
@@ -170,7 +170,7 @@ const AddCancellationPolicy = () => {
                                 </div>
 
                                 <div className="col">
-                                    <div class="form-floating">
+                                    <div className="form-floating">
                                         <input
                                             type="text"
                                             className="form-control"
@@ -192,12 +192,12 @@ const AddCancellationPolicy = () => {
                 <div className="card ">
                     <div className="card-body d-grid gap-3">
                         <h6 className="card-subtitle mb-2 text-muted">Policy Value</h6>
-                        <div class="container">
-                            <div class="row ">
+                        <div className="container">
+                            <div className="row ">
                                 <div className="col-auto">
-                                    <div class="form-floating selectpicker">
-                                        <select class="form-select" id="policySource" name="policySource" onChange={handlePolicySource}>
-                                            <option selected>Select Source</option>
+                                    <div className="form-floating selectpicker">
+                                        <select className="form-select" id="policySource" name="policySource" onChange={handlePolicySource}>
+                                            <option value=" ">Select Source</option>
                                             <option value="expedia">Expedia</option>
                                             <option value="provider">Provider</option>
                                         </select>
@@ -214,9 +214,9 @@ const AddCancellationPolicy = () => {
                                 <RuleList rules={policy.rules} deleteRule={deleteRule} updateRule={updateRule} />
 
                                 {/*Adding Rule for Expedia*/}
-                                <div class="container">
+                                <div className="container">
                                     <form onSubmit={createRule}>
-                                        <div class="row row-cols-6 justify-content-center h-100 v-100">
+                                        <div className="row row-cols-6 justify-content-center h-100 v-100">
                                             <div className="col">
                                                 <div className="form-floating">
                                                     <input
@@ -263,9 +263,10 @@ const AddCancellationPolicy = () => {
                                                 </div>
                                             </div>
                                             <div className="col">
-                                                <div class="form-floating selectpicker">
-                                                    <select class="form-select" id="curreny" name="curreny" onChange={handleRuleChange}>
-                                                        <option selected>Select</option>
+                                                <div className="form-floating selectpicker">
+                                                    <select className="form-select" id="curreny" name="curreny" onChange={handleRuleChange}>
+                                                       {/*selected changed to value = ""*/}
+                                                        <option value="">Select</option>
                                                         <option value="USD">USD</option>
                                                         <option value="INR">INR</option>
                                                     </select>
@@ -273,9 +274,9 @@ const AddCancellationPolicy = () => {
                                                 </div>
                                             </div>
                                             <div className="col">
-                                                <div class="form-floating selectpicker">
-                                                    <select class="form-select" id="noShow" name="noShow" onChange={handleRuleChange}>
-                                                        <option selected>Select</option>
+                                                <div className="form-floating selectpicker">
+                                                    <select className="form-select" id="noShow" name="noShow" onChange={handleRuleChange}>
+                                                        <option value="">Select</option>
                                                         <option value="NO">NO</option>
                                                         <option value="YES">YES</option>
                                                     </select>
@@ -286,7 +287,7 @@ const AddCancellationPolicy = () => {
                                                 <FontAwesomeIcon onClick={deleteRule} icon={faTrash} />
                                             </div>
                                         </div>
-                                        <div class="row row-cols-1">
+                                        <div className="row row-cols-1">
                                             <div className="col">
                                                 <button type="submit" className="btn btn-primary btn-sm float-end" onClick={createRule}>+Add Rule</button>
                                             </div>
@@ -304,7 +305,7 @@ const AddCancellationPolicy = () => {
                     <div className="card-body container">
                         <h6 className="card-subtitle mb-2 text-muted">Restrictions</h6>
 
-                        <div class="row">
+                        <div className="row">
                             <div className="col-auto">
                                 Stop Cancel Before :
                             </div>
@@ -342,7 +343,7 @@ const AddCancellationPolicy = () => {
                         </div>
                     </div>
                 </div>
-                <div class="row row-cols-1">
+                <div className="row row-cols-1">
                     <div className="col">
                         <button onClick={saveCancellationPolicy} className="btn btn-primary btn-sm float-end ">
                             Add Policy  </button>

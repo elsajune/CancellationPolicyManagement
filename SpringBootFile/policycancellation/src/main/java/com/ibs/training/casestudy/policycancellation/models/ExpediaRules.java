@@ -7,9 +7,10 @@ import javax.persistence.*;
 @Entity
 @Table(name ="EXPEDIA_RULESET")
 public class ExpediaRules {
+
     @Id
     @Column(name = "RULE_ID")
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private long ruleId;
 
     @Column(name = "OFFSET_HOURS")
@@ -30,8 +31,8 @@ public class ExpediaRules {
     @Column(name = "NO_SHOW")
     private boolean noShow;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "POLICY_ID", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY /*, optional = false*/)
+    @JoinColumn(name = "POLICY_ID" /*, nullable = false*/)
     private CancellationPolicy policy;
 
     public long getRuleId() {

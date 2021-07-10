@@ -2,6 +2,7 @@ package com.ibs.training.casestudy.policycancellation.controllers;
 
 import com.ibs.training.casestudy.policycancellation.models.CancellationPolicy;
 import com.ibs.training.casestudy.policycancellation.repository.CancellationPolicyRepository;
+import com.ibs.training.casestudy.policycancellation.repository.ExpediaRuleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,12 +12,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins = "http://localhost:8083")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api")
 public class CancellationPolicyController {
     @Autowired
     CancellationPolicyRepository cancellationPolicyRepository;
+
+    @Autowired
+    ExpediaRuleRepository expediaRuleRepository;
 
     @PostMapping("/cancellationpolicies")
     //Add new Cancellation Policy (Learn more about ResponseEntity)

@@ -1,6 +1,7 @@
 package com.ibs.training.casestudy.policycancellation.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -36,7 +37,8 @@ public class CancellationPolicy {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime policyUpdateOn;
 
-    @OneToMany(mappedBy = "policy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "policy" , fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<ExpediaRules> rules;
 
     public long getPolicyId() {

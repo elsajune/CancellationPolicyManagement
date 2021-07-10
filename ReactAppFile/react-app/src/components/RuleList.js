@@ -9,84 +9,86 @@ const RuleList = (props) => {
     const rules = props.rules;
 
 
-    return (<div>
+    return (<div class="d-grid gap-3">
         {
-            rules.map(rule => {
+            rules && rules.map(rule => {
                 return (
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <div className="form-group">
-                                        <label htmlFor="offSetDays">Offset Days</label>
-                                        <input
-                                            type="number"
-                                            id="offSetDays"
-                                            required
-                                            min="0"
-                                            value={rule.offSetDays}
-                                            onChange={event => props.updateRule(event.target.value, rule.key)}
-                                            name="offSetDays"
-                                        />
-                                    </div>
-                                </td>
-                                <td>
-                                    <div className="form-group">
-                                        <label htmlFor="offSetHours">Offset Hours</label>
-                                        <input
-                                            type="number"
-                                            className="form-control"
-                                            id="offSetHours"
-                                            required
-                                            min="0"
-                                            value={rule.offSetHours}
-                                            onChange={event => props.updateRule(event.target.value, rule.key)}
-                                            name="offSetHours"
-                                        />
-                                    </div>
-                                </td>
-                                <td>
-                                    <div className="form-group">
-                                        <label htmlFor="value">Value</label>
-                                        <input
-                                            type="number"
-                                            className="form-control"
-                                            id="value"
-                                            required
-                                            min="0"
-                                            value={rule.value}
-                                            onChange={event => props.updateRule(event.target.value, rule.key)}
-                                            name="value"
-                                        />
-                                    </div>
-                                </td>
-                                <td>
-                                    <label>
-                                        Curreny:
-                                        <select id="curreny" name="curreny" onChange={event => props.updateRule(event.target.value, rule.key)}>
-                                            <option selected>Select</option>
-                                            <option value="USD">USD</option>
-                                            <option value="INR">INR</option>
-                                        </select>
-                                    </label>
-                                </td>
-                                <td>
-                                    <label htmlFor="noShow">No Show:</label>
-                                    <select id="noShow" name="noShow" onChange={event => props.updateRule(event.target.value, rule.key)}>
+                    <div class="container d-grid gap-3">
+
+                        <div class="row row-cols-6 justify-content-center h-100 v-100">
+                            <div className="col">
+                                <div className="form-floating">
+                                    <input
+                                        type="number"
+                                        className="form-control"
+                                        id="offSetDays"
+                                        required
+                                        min="0"
+                                        value={rule.offSetDays}
+                                        onChange={event => props.updateRule(event.target.value, rule.key)}
+                                        name="offSetDays"
+                                    />
+                                    <label htmlFor="offSetDays">Offset Days</label>
+                                </div>
+                            </div>
+                            <div className="col">
+                                <div className="form-floating">
+                                    <input
+                                        type="number"
+                                        className="form-control"
+                                        id="offSetHours"
+                                        required
+                                        min="0"
+                                        value={rule.offSetHours}
+                                        onChange={event => props.updateRule(event.target.value, rule.key)}
+                                        name="offSetHours"
+                                    />
+                                    <label htmlFor="offSetHours">Offset Hours</label>
+                                </div>
+                            </div>
+                            <div className="col">
+                                <div className="form-floating">
+                                    <input
+                                        type="number"
+                                        className="form-control"
+                                        id="value"
+                                        required
+                                        min="0"
+                                        value={rule.value}
+                                        onChange={event => props.updateRule(event.target.value, rule.key)}
+                                        name="value"
+                                    />
+                                    <label htmlFor="value">Value</label>
+                                </div>
+                            </div>
+                            <div className="col">
+                                <div class="form-floating selectpicker">
+                                    <select class="form-select" id="curreny" name="curreny" onChange={event => props.updateRule(event.target.value, rule.key)}>
+                                        <option selected>Select</option>
+                                        <option value="USD">USD</option>
+                                        <option value="INR">INR</option>
+                                    </select>
+                                    <label htmlFor="curreny">Curreny</label>
+                                </div>
+                            </div>
+                            <div className="col">
+                                <div class="form-floating selectpicker">
+                                    <select class="form-select" id="noShow" name="noShow" onChange={event => props.updateRule(event.target.value, rule.key)}>
                                         <option selected>Select</option>
                                         <option value="NO">NO</option>
                                         <option value="YES">YES</option>
                                     </select>
-
-                                </td>
-                                <td>
-                                    <FontAwesomeIcon onClick={() => {
+                                    <label htmlFor="noShow">No Show:</label>
+                                </div>
+                            </div>
+                            <div className="col-md-auto my-auto">
+                            <FontAwesomeIcon onClick={() => {
                                         props.deleteRule(rule.key)
                                     }} icon={faTrash} />
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>);
+                            </div>
+                        </div>
+                    </div>
+                );
             })
         }
 

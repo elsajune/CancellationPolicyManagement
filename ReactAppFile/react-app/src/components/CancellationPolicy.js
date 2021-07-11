@@ -79,21 +79,21 @@ const CancellationPolicy = (props) => {
             });
     };
 
-    return (
-        <div class="row ">
-            <div className="col border border-dark"><FontAwesomeIcon onClick={handleArrowClick} icon={faAngleRight} /></div>
-            <div className="col border border-dark">{policy.policyName}</div>
-            <div className="col border border-dark">{policy.policyDescription}</div>
-            <div className="col border border-dark">{policy.policySource}</div>
-            <div className="col border border-dark">{policy.policyCancelRestrictionDays}</div>
-            <div className="col border border-dark">{policy.policyCancelRestrictionHours}</div>
-            <div className="col border border-dark">{policy.policyUpdatedBy}</div>
-            <div className="col border border-dark">{policy.policyUpdatedOn}</div>
-            <div className="col border border-dark">Edit</div>
-
-
+    return (<>
+        <tr>
+            <td><FontAwesomeIcon onClick={handleArrowClick} icon={faAngleRight} /></td>
+            <td>{policy.policyName}</td>
+            <td>{policy.policyDescription}</td>
+            <td>{policy.policySource}</td>
+            <td>{policy.policyCancelRestrictionDays}</td>
+            <td>{policy.policyCancelRestrictionHours}</td>
+            <td>{policy.policyUpdatedBy}</td>
+            <td>{policy.policyUpdatedOn}</td>
+            <td>Edit</td>
+        </tr>
+        <tr>
             {
-                (policy.rules.length!==0) && showRules && (<div>
+                (policy.rules.length !== 0) && showRules && (<td colSpan="9">
                     <table className="table table-bordered" >
                         <thead >
                             <tr style={{ textAlign: "center" }}>
@@ -111,24 +111,24 @@ const CancellationPolicy = (props) => {
                                 console.log(rule);
                                 return (
                                     <tr>
-                                        <th scope="col">{rule.offSetHours}</th>
-                                        <th scope="col">{rule.offSetDays}</th>
-                                        <th scope="col">{rule.feeBasis}</th>
-                                        <th scope="col">{rule.value}</th>
-                                        <th scope="col">{rule.currency}</th>
-                                        <th scope="col">{rule.noShow}</th>
+                                        <td scope="col">{rule.offSetHours}</td>
+                                        <td scope="col">{rule.offSetDays}</td>
+                                        <td scope="col">{rule.feeBasis}</td>
+                                        <td scope="col">{rule.value}</td>
+                                        <td scope="col">{rule.currency}</td>
+                                        <td scope="col">{rule.noShow}</td>
                                     </tr>
                                 );
                             }
                             )}
 
-
                         </tbody>
                     </table>
-                </div>
+                </td>
                 )
             }
-        </div>
+        </tr>
+    </>
     );
 
 };

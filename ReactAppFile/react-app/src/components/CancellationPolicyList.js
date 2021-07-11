@@ -8,6 +8,7 @@ import data from "../data.json";
 import { Link } from "react-router-dom";
 import { faAngleRight, faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import CancellationPolicy from "./CancellationPolicy";
+import { Table } from 'react-bootstrap';
 
 const CancellationPolicyList = () => {
 
@@ -34,34 +35,47 @@ const CancellationPolicyList = () => {
     }
 
     //UI Part add search
+    //UI Part add search
     return (
         <div>
             <h5>Cancellation Policy Table</h5>
             {data.policies ? (
-                 <div className="container " >
-                    <div class="row ">
-                        <div className="col border border-dark"></div>
-                        <div className="col border border-dark">Policy Name</div>
-                        <div className="col border border-dark">Policy Description</div>
-                        <div className="col border border-dark ">Policy Source</div>
-                        <div className="col border border-dark ">Cancel Restriction Days</div>
-                        <div className="col border border-dark ">Cancel Restriction Hours</div>
-                        <div className="col border border-dark ">Updated By</div>
-                        <div className="col border border-dark ">Updated On</div>
-                        <div className="col border border-dark ">Actions</div>
-                    </div >
-                   
-                        {data.policies.map((policy) => {
-                            console.log(policy);
-                            return (
-                                <CancellationPolicy policy ={policy}/>
-                            );
-                        })
-                        }
-                    
-                </div>) : (<p className="d-flex justify-content-center">The policy table is empty</p>)
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel-body">
+                                <Table bordered>
+                                    <thead>
+                                        <tr style={{ textAlign: "center" }}>
+                                            <th scope="col"></th>
+                                            <th scope="col">Policy Name</th>
+                                            <th scope="col">Policy Description</th>
+                                            <th scope="col">Policy Source</th>
+                                            <th scope="col">Cancel Restriction Days</th>
+                                            <th scope="col">Cancel Restriction Hours</th>
+                                            <th scope="col">Updated By</th>
+                                            <th scope="col">Updated On</th>
+                                            <th scope="col">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {data.policies.map((policy) => {
+                                            console.log(policy);
+                                            return (
+                                                <CancellationPolicy policy={policy} />
+                                            );
+                                        })
+                                        }
+                                    </tbody>
+                                </Table >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ) : (<p className="d-flex justify-content-center">The policy table is empty</p>)
             }
-        </div>
+        </div >
     );
 
 };

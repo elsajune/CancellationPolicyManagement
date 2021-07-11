@@ -5,6 +5,8 @@ import {
     RETRIEVE_POLICY
 } from "./types";
 
+import axios from "axios";
+
 import CancellationPolicyService from "../services/CancellationPolicyService";
 
 //Async inside Synchronoue function
@@ -22,15 +24,14 @@ export const createCancellationPolicy = (policy) => async (dispatch) => {
     }
 };
 
-
-//how does asyc dispatch work ?
 export const retrievePolicy = () => async (dispatch) => {
     try {
         const response = await CancellationPolicyService.getAll();
         dispatch({
             type: RETRIEVE_POLICY,
-            payload: response.data
+            payload: JSON.parse(JSON.stringify(response.data))
         });
+        console.log(JSON.parse(JSON.stringify(response.data)));
     } catch (error) {
         console.log(error);
         //Why no promise here ?

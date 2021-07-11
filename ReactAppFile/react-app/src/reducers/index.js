@@ -1,7 +1,6 @@
 import { combineReducers } from "redux";
-import reducers from "./reducers"; //Check the working
+import policyReducer from "./reducers"; //Check the working
 
-export default combineReducers({
-    //List of Reducers
-    reducers
-});
+const allReducers = combineReducers({policyReducer});
+
+export default allReducers;

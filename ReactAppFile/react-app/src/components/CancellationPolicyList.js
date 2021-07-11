@@ -13,15 +13,17 @@ import { Table } from 'react-bootstrap';
 const CancellationPolicyList = () => {
 
     const [showRules, setShowRules] = useState(false);
-    const [icon, setIcon] = useState("faAngleRight")
-    const policies = useSelector(state => state.policies);/*data;*/
+    const [icon, setIcon] = useState("faAngleRight");
     const dispatch = useDispatch();
+    const policies = useSelector((state) => {return state.policies});/*data;*/
+    
 
 
     //wHY empty array ?
     useEffect(() => {
         dispatch(retrievePolicy());
-    }, []);
+
+    });
 
 
     const handleArrowClick = () => {
@@ -38,7 +40,7 @@ const CancellationPolicyList = () => {
     //UI Part add search
     return (
         <div>
-            <h5>Cancellation Policy Table</h5>
+            <h5 onClick={()=>{console.log(policies)}}>Cancellation Policy Table</h5>
             {policies ? (
 
                 <div class="container">

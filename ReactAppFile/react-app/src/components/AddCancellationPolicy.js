@@ -44,21 +44,6 @@ const AddCancellationPolicy = () => {
     //To dispatch action to the store
     const dispatch = useDispatch();
 
-    //handle change in the input and update the policy 
-    const handleInputChange = event => {
-        const { name, value } = event.target;
-        setPolicy({ ...policy, [name]: value });
-    };
-
-    const handlePolicySource = event => {
-        const { value } = event.target;
-        if (value === "expedia") {
-            setShowRule(true);
-        } else {
-            setShowRule(false);
-        }
-    };
-
     //handle change in the input and update the rule
     const createRule = (event) => {
         event.preventDefault();
@@ -104,7 +89,20 @@ const AddCancellationPolicy = () => {
         //Check this setting of policy's rules
         setPolicy({...policy,rules:updateRules})
     }*/
+    //handle change in the input and update the policy 
+    const handleInputChange = event => {
+        const { name, value } = event.target;
+        setPolicy({ ...policy, [name]: value });
+    };
 
+    const handlePolicySource = event => {
+        const { value } = event.target;
+        if (value === "expedia") {
+            setShowRule(true);
+        } else {
+            setShowRule(false);
+        }
+    };
 
     const saveCancellationPolicy = () => {
         //Value added to the DB and the policy that was returned in the response is used to setPolicy
@@ -124,6 +122,7 @@ const AddCancellationPolicy = () => {
                 policyUpdateOn: data.policyUpdateOn,
             }*/);
             setAddedPolicy(true);
+            console.log(data);
         }).catch((error) => {
             console.log(error);
         });

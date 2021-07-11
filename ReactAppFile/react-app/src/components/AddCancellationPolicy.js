@@ -40,6 +40,7 @@ const AddCancellationPolicy = () => {
     const [showRule, setShowRule] = useState(false);
     const [message, setMessage] = useState("");
 
+
     //To dispatch action to the store
     const dispatch = useDispatch();
 
@@ -265,7 +266,7 @@ const AddCancellationPolicy = () => {
                                             <div className="col">
                                                 <div className="form-floating selectpicker">
                                                     <select className="form-select" id="curreny" name="curreny" onChange={handleRuleChange}>
-                                                       {/*selected changed to value = ""*/}
+                                                        {/*selected changed to value = ""*/}
                                                         <option value="">Select</option>
                                                         <option value="USD">USD</option>
                                                         <option value="INR">INR</option>

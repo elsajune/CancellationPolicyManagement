@@ -7,6 +7,7 @@ import {
 import data from "../data.json";
 import { Link } from "react-router-dom";
 import { faAngleRight, faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import CancellationPolicy from "./CancellationPolicy";
 
 const CancellationPolicyList = () => {
 
@@ -37,68 +38,32 @@ const CancellationPolicyList = () => {
         <div>
             <h5>Cancellation Policy Table</h5>
             {data.policies ? (
-                <table className="table table-bordered" >
-                    <thead >
-                        <tr style={{ textAlign: "center" }}>
-                            <th scope="col"></th>
-                            <th scope="col">Policy Name</th>
-                            <th scope="col">Policy Description</th>
-                            <th scope="col">Policy Source</th>
-                            <th scope="col">Cancel Restriction Days</th>
-                            <th scope="col">Cancel Restriction Hours</th>
-                            <th scope="col">Updated By</th>
-                            <th scope="col">Updated On</th>
-                            <th scope="col">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                 <div className="container " >
+                    <div class="row ">
+                        <div className="col border border-dark"></div>
+                        <div className="col border border-dark">Policy Name</div>
+                        <div className="col border border-dark">Policy Description</div>
+                        <div className="col border border-dark ">Policy Source</div>
+                        <div className="col border border-dark ">Cancel Restriction Days</div>
+                        <div className="col border border-dark ">Cancel Restriction Hours</div>
+                        <div className="col border border-dark ">Updated By</div>
+                        <div className="col border border-dark ">Updated On</div>
+                        <div className="col border border-dark ">Actions</div>
+                    </div >
+                   
                         {data.policies.map((policy) => {
                             console.log(policy);
                             return (
-                                <tr>
-                                    <td><FontAwesomeIcon onClick={handleArrowClick} icon={faAngleRight} /></td>
-                                    <td>{policy.policyName}</td>
-                                    <td>{policy.policyDescription}</td>
-                                    <td>{policy.policySource}</td>
-                                    <td>{policy.policyCancelRestrictionDays}</td>
-                                    <td>{policy.policyCancelRestrictionHours}</td>
-                                    <td>{policy.policyUpdatedBy}</td>
-                                    <td>{policy.policyUpdatedOn}</td>
-                                    <td>Edit</td>
-                                    
-
-                                    {
-                                        showRules && (<td style ={{display: "tableRow"}}
-                                            >
-                                        <table className="table table-bordered" >
-                                            <thead >
-                                                <tr style={{ textAlign: "center" }}>
-                                                    <th scope="col"></th>
-                                                    <th scope="col">Policy Name</th>
-                                                    <th scope="col">Policy Description</th>
-                                                    <th scope="col">Policy Source</th>
-                                                    <th scope="col">Cancel Restriction Days</th>
-                                                    <th scope="col">Cancel Restriction Hours</th>
-                                                    <th scope="col">Updated By</th>
-                                                    <th scope="col">Updated On</th>
-                                                    <th scope="col">Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody></tbody>
-                                            </table>
-                                            </td>
-                                            )
-                                    }
-                               </tr>
-                                            );
+                                <CancellationPolicy policy ={policy}/>
+                            );
                         })
                         }
-                    </tbody>
-                </table>) : (<p className="d-flex justify-content-center">The policy table is empty</p>)
+                    
+                </div>) : (<p className="d-flex justify-content-center">The policy table is empty</p>)
             }
         </div>
-                    );
+    );
 
 };
 
-                    export default CancellationPolicyList;
+export default CancellationPolicyList;

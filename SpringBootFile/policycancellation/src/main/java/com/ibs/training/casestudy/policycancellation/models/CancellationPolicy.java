@@ -37,7 +37,7 @@ public class CancellationPolicy {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime policyUpdatedOn;
 
-    @OneToMany(mappedBy = "policy" , fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "policy" , fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ExpediaRules> rules;
 
     public long getPolicyId() {

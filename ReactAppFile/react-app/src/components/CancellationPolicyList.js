@@ -14,14 +14,14 @@ const CancellationPolicyList = () => {
 
     const [showRules, setShowRules] = useState(false);
     const [icon, setIcon] = useState("faAngleRight")
-    // const policies = data; /*useSelector(state => state.policies);*/
+    const policies = useSelector(state => state.policies);/*data;*/
     const dispatch = useDispatch();
 
 
     //wHY empty array ?
-    /*useEffect(() => {
+    useEffect(() => {
         dispatch(retrievePolicy());
-    }, []);*/
+    }, []);
 
 
     const handleArrowClick = () => {
@@ -39,7 +39,7 @@ const CancellationPolicyList = () => {
     return (
         <div>
             <h5>Cancellation Policy Table</h5>
-            {data.policies ? (
+            {policies ? (
 
                 <div class="container">
                     <div class="row">
@@ -60,7 +60,7 @@ const CancellationPolicyList = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {data.policies.map((policy) => {
+                                        {policies.map((policy) => {
                                             console.log(policy);
                                             return (
                                                 <CancellationPolicy policy={policy} />

@@ -3,14 +3,15 @@ package com.ibs.training.casestudy.policycancellation.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name ="EXPEDIA_RULESET")
-public class ExpediaRules {
+public class ExpediaRules{
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "RULE_ID")
-    @GeneratedValue(strategy= GenerationType.AUTO)
     private long ruleId;
 
     @Column(name = "OFFSET_HOURS")
@@ -31,8 +32,9 @@ public class ExpediaRules {
     @Column(name = "NO_SHOW")
     private String noShow;
 
-    @ManyToOne(fetch = FetchType.LAZY /*, optional = false*/)
-    @JoinColumn(name = "POLICY_ID" /*, nullable = false*/)
+    @ManyToOne(fetch = FetchType.LAZY , optional = false)
+    @JoinColumn(name = "POLICY_ID" , nullable = false)
+    @JsonIgnore
     private CancellationPolicy policy;
 
     public long getRuleId() {

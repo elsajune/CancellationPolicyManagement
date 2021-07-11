@@ -27,7 +27,13 @@ public class CancellationPolicyController {
     //Add new Cancellation Policy (Learn more about ResponseEntity)
     public ResponseEntity<CancellationPolicy> addCancellationPolicy(@RequestBody CancellationPolicy newPolicy) {
         try {
+            List<ExpediaRules> expediaRules = newPolicy.getRules();
+            expediaRules.forEach((rule) ->{
+                rule.setPolicy(newPolicy);
+            });
+            newPolicy.setRules(expediaRules);
             CancellationPolicy addedPolicy = cancellationPolicyRepository.save(newPolicy);
+
             return new ResponseEntity<>(addedPolicy, HttpStatus.CREATED);
         } catch (Exception exception) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);

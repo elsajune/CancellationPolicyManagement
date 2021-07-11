@@ -29,7 +29,7 @@ public class ExpediaRules {
     private String currency;
 
     @Column(name = "NO_SHOW")
-    private boolean noShow;
+    private String noShow;
 
     @ManyToOne(fetch = FetchType.LAZY /*, optional = false*/)
     @JoinColumn(name = "POLICY_ID" /*, nullable = false*/)
@@ -83,11 +83,11 @@ public class ExpediaRules {
         this.currency = currency;
     }
 
-    public boolean isNoShow() {
+    public String isNoShow() {
         return noShow;
     }
 
-    public void setNoShow(boolean noShow) {
+    public void setNoShow(String noShow) {
         this.noShow = noShow;
     }
 

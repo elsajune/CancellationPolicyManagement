@@ -1,6 +1,7 @@
 package com.ibs.training.casestudy.policycancellation.controllers;
 
 import com.ibs.training.casestudy.policycancellation.models.CancellationPolicy;
+import com.ibs.training.casestudy.policycancellation.models.ExpediaRules;
 import com.ibs.training.casestudy.policycancellation.repository.CancellationPolicyRepository;
 import com.ibs.training.casestudy.policycancellation.repository.ExpediaRuleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,8 +65,8 @@ public class CancellationPolicyController {
             selectedPolicy.setPolicyName(updatesPolicy.getPolicyName());
             selectedPolicy.setPolicySource(updatesPolicy.getPolicySource());
             selectedPolicy.setPolicyDescription(updatesPolicy.getPolicyDescription());
-            selectedPolicy.setPolicyUpdateBy(updatesPolicy.getPolicyUpdateBy());
-            selectedPolicy.setPolicyUpdateOn(updatesPolicy.getPolicyUpdateOn());
+            selectedPolicy.setPolicyUpdatedBy(updatesPolicy.getPolicyUpdatedBy());
+            selectedPolicy.setPolicyUpdatedOn(updatesPolicy.getPolicyUpdatedOn());
             selectedPolicy.setPolicyCancelRestrictionDays(updatesPolicy.getPolicyCancelRestrictionDays());
             selectedPolicy.setPolicyCancelRestrictionHours(updatesPolicy.getPolicyCancelRestrictionHours());
             selectedPolicy.setRules(updatesPolicy.getRules());

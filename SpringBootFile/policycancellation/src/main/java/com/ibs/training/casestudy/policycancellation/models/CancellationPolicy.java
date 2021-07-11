@@ -31,14 +31,13 @@ public class CancellationPolicy {
     private int policyCancelRestrictionHours;
 
     @Column(name = "UPDATED_BY")
-    private String policyUpdateBy;
+    private String policyUpdatedBy;
 
     @Column(name = "UPDATED_ON")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime policyUpdateOn;
+    private LocalDateTime policyUpdatedOn;
 
     @OneToMany(mappedBy = "policy" , fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonIgnore
     private List<ExpediaRules> rules;
 
     public long getPolicyId() {
@@ -89,20 +88,20 @@ public class CancellationPolicy {
         this.policyCancelRestrictionHours = policyCancelRestrictionHours;
     }
 
-    public String getPolicyUpdateBy() {
-        return policyUpdateBy;
+    public String getPolicyUpdatedBy() {
+        return policyUpdatedBy;
     }
 
-    public void setPolicyUpdateBy(String policyUpdateBy) {
-        this.policyUpdateBy = policyUpdateBy;
+    public void setPolicyUpdatedBy(String policyUpdatedBy) {
+        this.policyUpdatedBy = policyUpdatedBy;
     }
 
-    public LocalDateTime getPolicyUpdateOn() {
-        return policyUpdateOn;
+    public LocalDateTime getPolicyUpdatedOn() {
+        return policyUpdatedOn;
     }
 
-    public void setPolicyUpdateOn(LocalDateTime policyUpdateOn) {
-        this.policyUpdateOn = policyUpdateOn;
+    public void setPolicyUpdatedOn(LocalDateTime policyUpdateOn) {
+        this.policyUpdatedOn = policyUpdatedOn;
     }
 
     public List<ExpediaRules> getRules() {

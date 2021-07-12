@@ -16,7 +16,7 @@ const update = (id, data) => {
     return http.put(`/cancellationpolicies/${id}`, data);
 };
 
-const remove = id => {
+const deletePolicy = id => {
     return http.delete(`/cancellationpolicies/${id}`);
 };
 
@@ -27,7 +27,7 @@ const CancellationPolicyService = {
     get,
     create,
     update,
-    remove
+    deletePolicy
 };
 
 export default CancellationPolicyService;

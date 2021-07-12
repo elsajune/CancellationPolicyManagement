@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     retrievePolicy,
 } from "../actions/actioncreator";
 import data from "../data.json";
-import { Link } from "react-router-dom";
-import { faAngleRight, faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import CancellationPolicy from "./CancellationPolicy";
 import { Table } from 'react-bootstrap';
 
@@ -17,31 +14,16 @@ const CancellationPolicyList = () => {
     const dispatch = useDispatch();
     const policies = useSelector((state) => {return state.policies});/*data;*/
     
-
-
-    //wHY empty array ?
     useEffect(() => {
         dispatch(retrievePolicy());
+    },[dispatch]);
 
-    });
 
-
-    const handleArrowClick = () => {
-        if (icon === "faAngleRight") {
-            setIcon("faAngleDown");
-            setShowRules(true);
-        } else {
-            setIcon("faAngleRight");
-            setShowRules(false);
-        }
-    }
-
-    //UI Part add search
     //UI Part add search
     return (
         <div>
             <h5 onClick={()=>{console.log(policies)}}>Cancellation Policy Table</h5>
-            {policies ? (
+            {data.policies ? (
 
                 <div class="container">
                     <div class="row">
@@ -62,7 +44,7 @@ const CancellationPolicyList = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {policies.map((policy) => {
+                                        {data.policies.map((policy) => {
                                             console.log(policy);
                                             return (
                                                 <CancellationPolicy policy={policy} />

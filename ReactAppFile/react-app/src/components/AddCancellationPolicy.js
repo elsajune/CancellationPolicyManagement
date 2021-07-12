@@ -57,6 +57,10 @@ const AddCancellationPolicy = () => {
     const handleRuleChange = event => {
         const { name, value } = event.target;
         setRule({ ...rule, [name]: value, key: Date.now() });
+        const newRule = { ...rule };
+        const newRules = [...policy.rules, newRule];
+        //Check this setPolicy again
+        setPolicy({ ...policy, rules: newRules });
     };
 
     const deleteRule = (key) => {
@@ -71,6 +75,7 @@ const AddCancellationPolicy = () => {
         console.log(rule);
         console.log(key);
     }
+
     /*const updateRule = (rule, key) => {
         console.log("Rules:" + policy.rules);
         const updateRules = { ...policy.rules }
@@ -90,6 +95,7 @@ const AddCancellationPolicy = () => {
         setPolicy({...policy,rules:updateRules})
     }*/
     //handle change in the input and update the policy 
+
     const handleInputChange = event => {
         const { name, value } = event.target;
         setPolicy({ ...policy, [name]: value });
@@ -101,12 +107,18 @@ const AddCancellationPolicy = () => {
             setShowRule(true);
         } else {
             setShowRule(false);
+            setPolicy({
+                ...policy, rules: []
+            })
         }
     };
 
-    const saveCancellationPolicy = () => {
+    const saveCancellationPolicy = (event) => {
         //Value added to the DB and the policy that was returned in the response is used to setPolicy
+        event.preventDefault();
         policy.rules.map(rule => delete rule.key);
+        console.log(policy);
+        console.log(policy.rule)
         dispatch(createCancellationPolicy(policy)).then(data => {
             setPolicy(
                 JSON.parse(JSON.stringify(data))
@@ -131,8 +143,8 @@ const AddCancellationPolicy = () => {
     const newCancellationPolicy = () => {
         setPolicy(intialPolicyState);
         setAddedPolicy(false);
+        setRule(intialRuleState);
     };
-
 
     return (
 
@@ -215,7 +227,7 @@ const AddCancellationPolicy = () => {
 
                                 {/*Adding Rule for Expedia*/}
                                 <div className="container">
-                                    <form onSubmit={createRule}>
+                                    <div>
                                         <div className="row row-cols-6 justify-content-center h-100 v-100">
                                             <div className="col">
                                                 <div className="form-floating">
@@ -289,10 +301,10 @@ const AddCancellationPolicy = () => {
                                         </div>
                                         <div className="row row-cols-1">
                                             <div className="col">
-                                                <button type="submit" className="btn btn-primary btn-sm float-end" onClick={createRule}>+Add Rule</button>
+                                                <button className="btn btn-primary btn-sm float-end" onClick={createRule}>+Add Rule</button>
                                             </div>
                                         </div>
-                                    </form>
+                                    </div>
                                 </div>
                             </div>
                         )}

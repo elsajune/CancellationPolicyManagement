@@ -13,9 +13,9 @@ const RuleList = (props) => {
         {
             rules && rules.map(rule => {
                 return (
-                    <div className="container d-grid gap-3">
+                    <div  key = {rule.key} className="container d-grid gap-3">
 
-                        <div className="row row-cols-6 justify-content-center h-100 v-100">
+                        <div className="row row-cols-6 justify-content-center h-100 v-100 ">
                             <div className="col">
                                 <div className="form-floating">
                                     <input

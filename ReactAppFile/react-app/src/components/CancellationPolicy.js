@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { updatePolicy, deletePolicy } from "../actions/actioncreator";
 import CancellationPolicyService from "../services/CancellationPolicyService";
-import { faAngleRight, faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import { faAngleRight, faAngleDown, faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 
 const CancellationPolicy = (props) => {
     const intialPolicyState = {
-        id: 0,
+        policyId: 0,
         policyName: "",
         policyDescription: "",
         policySource: "",
@@ -34,32 +34,10 @@ const CancellationPolicy = (props) => {
         }
     }
 
-
-
     const dispatch = useDispatch();
 
-    const getPolicy = (id) => {
-        CancellationPolicyService.get(id)
-            .then(response => {
-                setPolicy(response.data);
-                console.log(response.data);
-            }).catch(error => {
-                console.log(error)
-            });
-    };
-
-    //What is props.match.params.id?
-    /*useEffect(() => {
-        getPolicy(props.match.params.id);
-    }, [props.match.params.id]);*/
-
-    const handleInputChange = event => {
-        const { name, value } = event.target;
-        setPolicy({ ...policy, [name]: value });
-    };
-
-    const updateContent = () => {
-        dispatch(updatePolicy(policy.id, policy))
+     const updateContent = () => {
+        dispatch(updatePolicy(policy.policyId, policy))
             .then(response => {
                 console.log(response);
                 setMessage("The policy was updated successfully!");
@@ -69,8 +47,9 @@ const CancellationPolicy = (props) => {
             });
     };
 
-    const removePolicy = () => {
-        dispatch(deletePolicy(policy.id))
+    const removePolicy = (policy) => {
+        console.log(policy.policyId)
+        dispatch(deletePolicy(policy.policyId))
             .then(() => {
                 props.history.push("/cancellationpolicies");
             })
@@ -89,7 +68,10 @@ const CancellationPolicy = (props) => {
             <td>{policy.policyCancelRestrictionHours}</td>
             <td>{policy.policyUpdatedBy}</td>
             <td>{policy.policyUpdatedOn}</td>
-            <td>Edit</td>
+            <td><span>
+               <FontAwesomeIcon onClick={handleArrowClick} icon={faEdit} />
+               <FontAwesomeIcon onClick={() => removePolicy(policy)} icon={faTrash} />
+            </span></td>
         </tr>
         <tr>
             {
@@ -111,12 +93,12 @@ const CancellationPolicy = (props) => {
                                 console.log(rule);
                                 return (
                                     <tr>
-                                        <td scope="col">{rule.offSetHours}</td>
-                                        <td scope="col">{rule.offSetDays}</td>
-                                        <td scope="col">{rule.feeBasis}</td>
-                                        <td scope="col">{rule.value}</td>
-                                        <td scope="col">{rule.currency}</td>
-                                        <td scope="col">{rule.noShow}</td>
+                                        <td>{rule.offSetHours}</td>
+                                        <td>{rule.offSetDays}</td>
+                                        <td>{rule.feeBasis}</td>
+                                        <td>{rule.value}</td>
+                                        <td>{rule.currency}</td>
+                                        <td>{rule.noShow}</td>
                                     </tr>
                                 );
                             }

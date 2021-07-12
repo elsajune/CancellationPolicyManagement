@@ -9,18 +9,8 @@ import {
     faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 
-const AddCancellationPolicy = () => {
-    const intialPolicyState = {
-        policyId: 0,
-        policyName: "Enter policy name",
-        policyDescription: "Enter policy Descritpion",
-        policySource: "",
-        policyCancelRestrictionDays: 0,
-        policyCancelRestrictionHours: 0,
-        policyUpdateBy: "",
-        policyUpdateOn: "",
-        rules: []
-    };
+const UpdateCancellationPolicy = (props) => {
+    const intialPolicyState = JSON.parse(JSON.stringify(props.policy));
 
     const intialRuleState = {
         ruleId: 0,
@@ -28,8 +18,8 @@ const AddCancellationPolicy = () => {
         offSetHours: 0,
         feeBasis: "amount",
         value: 0,
-        curreny: " ",
-        noShow: " ",
+        curreny: "USD",
+        noShow: "YES",
         key: Date.now()
 
     };
@@ -38,11 +28,10 @@ const AddCancellationPolicy = () => {
     const [policy, setPolicy] = useState(intialPolicyState);
     const [addedPolicy, setAddedPolicy] = useState(false);
     const [showRule, setShowRule] = useState(false);
-    const [message, setMessage] = useState("");
-
 
     //To dispatch action to the store
     const dispatch = useDispatch();
+
 
     //handle change in the input and update the rule
     const createRule = (event) => {

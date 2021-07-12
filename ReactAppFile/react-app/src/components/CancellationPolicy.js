@@ -1,29 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { updatePolicy, deletePolicy } from "../actions/actioncreator";
-import CancellationPolicyService from "../services/CancellationPolicyService";
+import { useHistory } from "react-router-dom";
 import { faAngleRight, faAngleDown, faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 
 const CancellationPolicy = (props) => {
-    const intialPolicyState = {
-        policyId: 0,
-        policyName: "",
-        policyDescription: "",
-        policySource: "",
-        policyCancelRestrictionDays: 0,
-        policyCancelRestrictionHours: 0,
-        policyUpdateBy: "",
-        policyUpdateOn: "",
-        rules: []
-    };
 
     const [policy, setPolicy] = useState(JSON.parse(JSON.stringify(props.policy)));
     const [message, setMessage] = useState("");
     const [showRules, setShowRules] = useState(false);
     const [icon, setIcon] = useState("faAngleRight");
 
+    const dispatch = useDispatch();
+    let history = useHistory();
+
+    //OnClick show the rules table if present
     const handleArrowClick = () => {
         if (icon === "faAngleRight") {
             setIcon("faAngleDown");
@@ -33,8 +26,6 @@ const CancellationPolicy = (props) => {
             setShowRules(false);
         }
     }
-
-    const dispatch = useDispatch();
 
      const updateContent = () => {
         dispatch(updatePolicy(policy.policyId, policy))
@@ -48,10 +39,11 @@ const CancellationPolicy = (props) => {
     };
 
     const removePolicy = (policy) => {
-        console.log(policy.policyId)
+        console.log(policy.policyId);
         dispatch(deletePolicy(policy.policyId))
             .then(() => {
-                props.history.push("/cancellationpolicies");
+                /*to refresh the page*/
+                history.push("/cancellationpolicies");
             })
             .catch(error => {
                 console.log(error);
@@ -70,6 +62,7 @@ const CancellationPolicy = (props) => {
             <td>{policy.policyUpdatedOn}</td>
             <td><span>
                <FontAwesomeIcon onClick={handleArrowClick} icon={faEdit} />
+               {'      '}
                <FontAwesomeIcon onClick={() => removePolicy(policy)} icon={faTrash} />
             </span></td>
         </tr>

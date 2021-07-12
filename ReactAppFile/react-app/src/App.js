@@ -26,8 +26,8 @@ export default function App() {
 
       <nav className="navbar navbar-expand navbar-dark bg-dark ">
         <a href="/" className="navbar-brand">
-          <FontAwesomeIcon icon={faCar} alt="" width="30" height="24" class="d-inline-block align-text-top"/>
-          <span className="mr-auto">Cars Admin Tool</span>
+          <FontAwesomeIcon icon={faCar} />
+          {`   `}Cars Admin Tool
           </a>
           
         <div className="navbar-nav mr-auto">

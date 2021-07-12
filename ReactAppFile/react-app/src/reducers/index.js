@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import policyReducer from "./reducers"; //Check the working
+import policyReducer from "./reducers"; 
 
 const allReducers = combineReducers({policyReducer});
 

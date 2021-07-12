@@ -5,15 +5,12 @@ import {
     RETRIEVE_POLICY
 } from "./types";
 
-import axios from "axios";
-
 import CancellationPolicyService from "../services/CancellationPolicyService";
 
 //Async inside Synchronoue function
 export const createCancellationPolicy = (policy) => async (dispatch) => {
     try {
         const response = await CancellationPolicyService.create(policy);
-
         dispatch({
             type: CREATE_POLICY,
             payload: response.data,
@@ -24,17 +21,18 @@ export const createCancellationPolicy = (policy) => async (dispatch) => {
     }
 };
 
+//Retrieve data using data from DB using axios;
 export const retrievePolicy = () => async (dispatch) => {
     try {
         const response = await CancellationPolicyService.getAll();
+        console.log("Inside Action Creator", JSON.parse(JSON.stringify(response.data)));
         dispatch({
             type: RETRIEVE_POLICY,
             payload: JSON.parse(JSON.stringify(response.data))
         });
-        console.log(JSON.parse(JSON.stringify(response.data)));
+
     } catch (error) {
         console.log(error);
-        //Why no promise here ?
     }
 };
 

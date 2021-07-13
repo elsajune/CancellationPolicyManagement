@@ -63,7 +63,7 @@ const RuleList = (props) => {
                             </div>
                             <div className="col">
                                 <div className="form-floating selectpicker">
-                                    <select className="form-select" id="curreny" name="curreny" onChange={event => props.updateRule(event.target.value, rule.key)}>
+                                    <select  value={rule.currency}  className="form-select" id="curreny" name="curreny" onChange={event => props.updateRule(event.target.value, rule.key)}>
                                         {/*selected changed to value*/}
                                         <option value="">Select</option>
                                         <option value="USD">USD</option>
@@ -74,7 +74,7 @@ const RuleList = (props) => {
                             </div>
                             <div className="col">
                                 <div className="form-floating selectpicker">
-                                    <select className="form-select" id="noShow" name="noShow" onChange={event => props.updateRule(event.target.value, rule.key)}>
+                                    <select value={rule.noShow} className="form-select" id="noShow" name="noShow" onChange={event => props.updateRule(event.target.value, rule.key)}>
                                         <option value="">Select</option>
                                         <option value="NO">NO</option>
                                         <option value="YES">YES</option>

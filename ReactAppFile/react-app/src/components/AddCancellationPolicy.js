@@ -50,17 +50,19 @@ const AddCancellationPolicy = () => {
         const newRule = { ...rule };
         const newRules = [...policy.rules, newRule];
         //Check this setPolicy again
-        setPolicy({ ...policy, rules: newRules });
+        setPolicy({ ...policy,rules:newRules });
+        console.log("Rule created",newRules);
+       
         setRule(intialRuleState);
     }
 
     const handleRuleChange = event => {
         const { name, value } = event.target;
         setRule({ ...rule, [name]: value, key: Date.now() });
-        const newRule = { ...rule };
+       /* const newRule = { ...rule };
         const newRules = [...policy.rules, newRule];
         //Check this setPolicy again
-        setPolicy({ ...policy, rules: newRules });
+        setPolicy({ ...policy, rules: newRules });*/
     };
 
     const deleteRule = (key) => {
@@ -71,12 +73,13 @@ const AddCancellationPolicy = () => {
         })
     }
 
+
     const updateRule = (rule, key) => {
         console.log(rule);
         console.log(key);
     }
 
-    /*const updateRule = (rule, key) => {
+   /* const updateRule = (rule, key) => {
         console.log("Rules:" + policy.rules);
         const updateRules = { ...policy.rules }
         updateRules.map(item => {
@@ -94,8 +97,8 @@ const AddCancellationPolicy = () => {
         //Check this setting of policy's rules
         setPolicy({...policy,rules:updateRules})
     }*/
-    //handle change in the input and update the policy 
 
+    //handle change in the input and update the policy 
     const handleInputChange = event => {
         const { name, value } = event.target;
         setPolicy({ ...policy, [name]: value });
@@ -117,8 +120,6 @@ const AddCancellationPolicy = () => {
         //Value added to the DB and the policy that was returned in the response is used to setPolicy
         event.preventDefault();
         policy.rules.map(rule => delete rule.key);
-        console.log(policy);
-        console.log(policy.rule)
         dispatch(createCancellationPolicy(policy)).then(data => {
             setPolicy(JSON.parse(JSON.stringify(data)));
             setAddedPolicy(true);
@@ -264,9 +265,9 @@ const AddCancellationPolicy = () => {
                                             </div>
                                             <div className="col">
                                                 <div className="form-floating selectpicker">
-                                                    <select className="form-select" id="curreny" name="curreny" onChange={handleRuleChange}>
+                                                    <select value={rule.currency} className="form-select" id="curreny" name="curreny" onChange={handleRuleChange}>
                                                         {/*selected changed to value = ""*/}
-                                                        <option value="">Select</option>
+                                                        <option value=" ">Select</option>
                                                         <option value="USD">USD</option>
                                                         <option value="INR">INR</option>
                                                     </select>
@@ -275,8 +276,8 @@ const AddCancellationPolicy = () => {
                                             </div>
                                             <div className="col">
                                                 <div className="form-floating selectpicker">
-                                                    <select className="form-select" id="noShow" name="noShow" onChange={handleRuleChange}>
-                                                        <option value="">Select</option>
+                                                    <select value={rule.noShow} className="form-select" id="noShow" name="noShow" onChange={handleRuleChange}>
+                                                        <option value=" ">Select</option>
                                                         <option value="NO">NO</option>
                                                         <option value="YES">YES</option>
                                                     </select>

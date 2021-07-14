@@ -28,41 +28,35 @@ const AddCancellationPolicy = () => {
         offSetHours: 0,
         feeBasis: "amount",
         value: 0,
-        curreny: " ",
+        currency: " ",
         noShow: " ",
         key: Date.now()
 
     };
 
     const [rule, setRule] = useState(intialRuleState);
+    //const [updateRule, setUpdateRule] = useState(intialRuleState); //For updation of rules
     const [policy, setPolicy] = useState(intialPolicyState);
     const [addedPolicy, setAddedPolicy] = useState(false);
     const [showRule, setShowRule] = useState(false);
-    const [message, setMessage] = useState("");
-
 
     //To dispatch action to the store
     const dispatch = useDispatch();
 
-    //handle change in the input and update the rule
+
+    /*handle functions for Expedia rules */
     const createRule = (event) => {
         event.preventDefault();
         const newRule = { ...rule };
         const newRules = [...policy.rules, newRule];
-        //Check this setPolicy again
-        setPolicy({ ...policy,rules:newRules });
-        console.log("Rule created",newRules);
-       
+        setPolicy({ ...policy, rules: newRules });
+        console.log("Rule created", newRules);
         setRule(intialRuleState);
     }
 
     const handleRuleChange = event => {
         const { name, value } = event.target;
         setRule({ ...rule, [name]: value, key: Date.now() });
-       /* const newRule = { ...rule };
-        const newRules = [...policy.rules, newRule];
-        //Check this setPolicy again
-        setPolicy({ ...policy, rules: newRules });*/
     };
 
     const deleteRule = (key) => {
@@ -73,30 +67,26 @@ const AddCancellationPolicy = () => {
         })
     }
 
-
-    const updateRule = (rule, key) => {
-        console.log(rule);
-        console.log(key);
+    const resetRule = () => {
+        setRule(intialRuleState);
     }
 
-   /* const updateRule = (rule, key) => {
-        console.log("Rules:" + policy.rules);
-        const updateRules = { ...policy.rules }
-        updateRules.map(item => {
-            if (item.key === key) {
-                    item.id = rule.id,
-                    item.offSetDays = rule.offSetDays,
-                    item.offSetHours = rule.offSetHours,
-                    item.feeBasis = "amount",
-                    item.value = rule.value,
-                    item.curreny = rule.curreny,
-                    item.noShow = rule.noShow
+
+    const updateRule = (event, key) => {
+        const { name, value } = event.target;
+        const rules = JSON.parse(JSON.stringify(policy.rules));
+        const updatedRules = rules.map(item => {
+            var temp = Object.assign({}, item);
+            if (temp.key === key) {
+                return { ...temp, [name]: value }
 
             }
-        })
-        //Check this setting of policy's rules
-        setPolicy({...policy,rules:updateRules})
-    }*/
+            return temp;
+        });
+        setPolicy({ ...policy, rules: updatedRules })
+    }
+
+
 
     //handle change in the input and update the policy 
     const handleInputChange = event => {
@@ -119,7 +109,8 @@ const AddCancellationPolicy = () => {
     const saveCancellationPolicy = (event) => {
         //Value added to the DB and the policy that was returned in the response is used to setPolicy
         event.preventDefault();
-        policy.rules.map(rule => delete rule.key);
+        // policy.rules.map(rule => delete rule.key);
+        console.log("To be Saved", policy);
         dispatch(createCancellationPolicy(policy)).then(data => {
             setPolicy(JSON.parse(JSON.stringify(data)));
             setAddedPolicy(true);
@@ -265,13 +256,13 @@ const AddCancellationPolicy = () => {
                                             </div>
                                             <div className="col">
                                                 <div className="form-floating selectpicker">
-                                                    <select value={rule.currency} className="form-select" id="curreny" name="curreny" onChange={handleRuleChange}>
+                                                    <select value={rule.currency} className="form-select" id="currency" name="currency" onChange={handleRuleChange}>
                                                         {/*selected changed to value = ""*/}
                                                         <option value=" ">Select</option>
                                                         <option value="USD">USD</option>
                                                         <option value="INR">INR</option>
                                                     </select>
-                                                    <label htmlFor="curreny">Curreny</label>
+                                                    <label htmlFor="currency">Currency</label>
                                                 </div>
                                             </div>
                                             <div className="col">
@@ -285,7 +276,7 @@ const AddCancellationPolicy = () => {
                                                 </div>
                                             </div>
                                             <div className="col-md-auto my-auto">
-                                                <FontAwesomeIcon onClick={deleteRule} icon={faTrash} />
+                                                <FontAwesomeIcon onClick={resetRule} icon={faTrash} />
                                             </div>
                                         </div>
                                         <div className="row row-cols-1">

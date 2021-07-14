@@ -26,7 +26,7 @@ const UpdateCancellationPolicy = (props) => {
 
     const [rule, setRule] = useState(intialRuleState);
     const [policy, setPolicy] = useState(intialPolicyState);
-    const [addedPolicy, setAddedPolicy] = useState(false);
+    const [updatedPolicy, setUpdatedPolicy] = useState(false);
     const [showRule, setShowRule] = useState(false);
 
     //To dispatch action to the store
@@ -38,7 +38,6 @@ const UpdateCancellationPolicy = (props) => {
         event.preventDefault();
         const newRule = { ...rule };
         const newRules = [...policy.rules, newRule];
-        //Check this setPolicy again
         setPolicy({ ...policy, rules: newRules });
         setRule(intialRuleState);
     }
@@ -61,11 +60,6 @@ const UpdateCancellationPolicy = (props) => {
     }
 
     const updateRule = (rule, key) => {
-        console.log(rule);
-        console.log(key);
-    }
-
-    /*const updateRule = (rule, key) => {
         console.log("Rules:" + policy.rules);
         const updateRules = { ...policy.rules }
         updateRules.map(item => {
@@ -77,12 +71,11 @@ const UpdateCancellationPolicy = (props) => {
                     item.value = rule.value,
                     item.curreny = rule.curreny,
                     item.noShow = rule.noShow
-
             }
         })
         //Check this setting of policy's rules
         setPolicy({...policy,rules:updateRules})
-    }*/
+    };
     //handle change in the input and update the policy 
 
     const handleInputChange = event => {

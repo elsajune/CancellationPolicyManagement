@@ -2,20 +2,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faTrash,
 } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
 
 
 const RuleList = (props) => {
 
     const rules = props.rules;
 
-
     return (<div className="d-grid gap-3">
         {
             rules && rules.map(rule => {
                 return (
-                    <div  key = {rule.key} className="container d-grid gap-3">
-
-                        <div className="row row-cols-6 justify-content-center h-100 v-100 ">
+                    <div key={rule.key} className="container d-grid gap-3">
+                        <div key={rule.key} className="row row-cols-6 justify-content-center h-100 v-100 ">
                             <div className="col">
                                 <div className="form-floating">
                                     <input
@@ -25,7 +24,7 @@ const RuleList = (props) => {
                                         required
                                         min="0"
                                         value={rule.offSetDays}
-                                        onChange={event => props.updateRule(event.target.value, rule.key)}
+                                        onChange={(event) => { props.updateRule(event, rule.key) }}
                                         name="offSetDays"
                                     />
                                     <label htmlFor="offSetDays">Offset Days</label>
@@ -40,7 +39,7 @@ const RuleList = (props) => {
                                         required
                                         min="0"
                                         value={rule.offSetHours}
-                                        onChange={event => props.updateRule(event.target.value, rule.key)}
+                                        onChange={(event) => { props.updateRule(event, rule.key) }}
                                         name="offSetHours"
                                     />
                                     <label htmlFor="offSetHours">Offset Hours</label>
@@ -55,7 +54,7 @@ const RuleList = (props) => {
                                         required
                                         min="0"
                                         value={rule.value}
-                                        onChange={event => props.updateRule(event.target.value, rule.key)}
+                                        onChange={(event) => { props.updateRule(event, rule.key) }}
                                         name="value"
                                     />
                                     <label htmlFor="value">Value</label>
@@ -63,18 +62,18 @@ const RuleList = (props) => {
                             </div>
                             <div className="col">
                                 <div className="form-floating selectpicker">
-                                    <select  value={rule.currency}  className="form-select" id="curreny" name="curreny" onChange={event => props.updateRule(event.target.value, rule.key)}>
+                                    <select value={rule.currency} className="form-select" id="currency" name="currency" onChange={(event) => { props.updateRule(event, rule.key) }}>
                                         {/*selected changed to value*/}
                                         <option value="">Select</option>
                                         <option value="USD">USD</option>
                                         <option value="INR">INR</option>
                                     </select>
-                                    <label htmlFor="curreny">Curreny</label>
+                                    <label htmlFor="currency">Currency</label>
                                 </div>
                             </div>
                             <div className="col">
                                 <div className="form-floating selectpicker">
-                                    <select value={rule.noShow} className="form-select" id="noShow" name="noShow" onChange={event => props.updateRule(event.target.value, rule.key)}>
+                                    <select value={rule.noShow} className="form-select" id="noShow" name="noShow" onChange={(event) => { props.updateRule(event, rule.key) }}>
                                         <option value="">Select</option>
                                         <option value="NO">NO</option>
                                         <option value="YES">YES</option>

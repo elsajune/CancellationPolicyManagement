@@ -3,7 +3,6 @@ package com.ibs.training.casestudy.policycancellation.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
 @Table(name ="EXPEDIA_RULESET")
@@ -15,10 +14,10 @@ public class ExpediaRules{
     private long ruleId;
 
     @Column(name = "OFFSET_HOURS")
-    private int offsetHours;
+    private int offSetHours;
 
     @Column(name = "OFFSET_DAYS")
-    private int offsetDays;
+    private int offSetDays;
 
     @Column(name = "FEE_BASIS")
     private String feeBasis;
@@ -45,20 +44,20 @@ public class ExpediaRules{
         this.ruleId = ruleId;
     }
 
-    public int getOffsetHours() {
-        return offsetHours;
+    public int getOffSetHours() {
+        return offSetHours;
     }
 
-    public void setOffsetHours(int offsetHours) {
-        this.offsetHours = offsetHours;
+    public void setOffSetHours(int offSetHours) {
+        this.offSetHours = offSetHours;
     }
 
-    public int getOffsetDays() {
-        return offsetDays;
+    public int getOffSetDays() {
+        return offSetDays;
     }
 
-    public void setOffsetDays(int offsetDays) {
-        this.offsetDays = offsetDays;
+    public void setOffSetDays(int offSetDays) {
+        this.offSetDays = offSetDays;
     }
 
     public String getFeeBasis() {

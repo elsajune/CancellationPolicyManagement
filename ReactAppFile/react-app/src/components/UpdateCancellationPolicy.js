@@ -30,8 +30,7 @@ const UpdateCancellationPolicy = (props) => {
     const [showRule, setShowRule] = useState(false);
 
     //To dispatch action to the store
-    const dispatch = useDispatch();
-
+    //const dispatch = useDispatch();
 
     //handle change in the input and update the rule
     const createRule = (event) => {

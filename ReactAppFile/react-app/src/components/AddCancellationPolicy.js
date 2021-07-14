@@ -35,7 +35,6 @@ const AddCancellationPolicy = () => {
     };
 
     const [rule, setRule] = useState(intialRuleState);
-    //const [updateRule, setUpdateRule] = useState(intialRuleState); //For updation of rules
     const [policy, setPolicy] = useState(intialPolicyState);
     const [addedPolicy, setAddedPolicy] = useState(false);
     const [showRule, setShowRule] = useState(false);
@@ -71,7 +70,6 @@ const AddCancellationPolicy = () => {
         setRule(intialRuleState);
     }
 
-
     const updateRule = (event, key) => {
         const { name, value } = event.target;
         const rules = JSON.parse(JSON.stringify(policy.rules));
@@ -79,13 +77,12 @@ const AddCancellationPolicy = () => {
             var temp = Object.assign({}, item);
             if (temp.key === key) {
                 return { ...temp, [name]: value }
-
             }
             return temp;
         });
         setPolicy({ ...policy, rules: updatedRules })
     }
-
+    /* end handle functions for Expedia rules */
 
 
     //handle change in the input and update the policy 
@@ -109,8 +106,6 @@ const AddCancellationPolicy = () => {
     const saveCancellationPolicy = (event) => {
         //Value added to the DB and the policy that was returned in the response is used to setPolicy
         event.preventDefault();
-        // policy.rules.map(rule => delete rule.key);
-        console.log("To be Saved", policy);
         dispatch(createCancellationPolicy(policy)).then(data => {
             setPolicy(JSON.parse(JSON.stringify(data)));
             setAddedPolicy(true);

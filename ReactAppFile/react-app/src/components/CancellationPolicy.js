@@ -50,6 +50,10 @@ const CancellationPolicy = (props) => {
             });
     };
 
+    const updatePolicy = () =>{
+        
+    }
+
     return (<>
         <tr>
             <td><FontAwesomeIcon onClick={handleArrowClick} icon={faAngleRight} /></td>
@@ -101,6 +105,9 @@ const CancellationPolicy = (props) => {
                     </table>
                 </td>
                 )
+            }
+            {
+
             }
         </tr>
     </>

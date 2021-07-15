@@ -94,6 +94,7 @@ const UpdateCancellationPolicy = (props) => {
 
     const updateContent = (event) => {
         event.preventDefault();
+        const editedPolicy = JSON.parse(JSON.stringify(policy));
         dispatch(updatePolicy(policy.policyId, policy))
             .then(response => {
                 console.log("Updated Response", response);
@@ -167,7 +168,7 @@ const UpdateCancellationPolicy = (props) => {
                             <div className="row ">
                                 <div className="col-auto">
                                     <div className="form-floating selectpicker">
-                                        <select value={policy.policySource} className="form-select" id="policySource" name="policySource" onChange={handlePolicySource}>
+                                        <select className="form-select" id="policySource" name="policySource" onChange={handlePolicySource}>
                                             <option value=" ">Select Source</option>
                                             <option value="expedia">Expedia</option>
                                             <option value="provider">Provider</option>

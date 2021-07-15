@@ -77,7 +77,8 @@ public class CancellationPolicyController {
             selectedPolicy.setPolicyUpdatedOn(LocalDateTime.now());
             selectedPolicy.setPolicyCancelRestrictionDays(updatesPolicy.getPolicyCancelRestrictionDays());
             selectedPolicy.setPolicyCancelRestrictionHours(updatesPolicy.getPolicyCancelRestrictionHours());
-            selectedPolicy.setRules(updatesPolicy.getRules());
+            selectedPolicy.getRules().clear();
+            selectedPolicy.getRules().addAll(updatesPolicy.getRules());
             return cancellationPolicyRepository.save(selectedPolicy);
         });
         if (policy.isPresent()) {

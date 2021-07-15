@@ -2,7 +2,7 @@ import { Card } from 'react-bootstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { createCancellationPolicy } from "../actions/actioncreator";
+import { updatePolicy } from "../actions/actioncreator";
 import RuleList from "./RuleList";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -18,7 +18,7 @@ const UpdateCancellationPolicy = (props) => {
         offSetHours: 0,
         feeBasis: "amount",
         value: 0,
-        curreny: "USD",
+        currency: "USD",
         noShow: "YES",
         key: Date.now()
 
@@ -30,24 +30,21 @@ const UpdateCancellationPolicy = (props) => {
     const [showRule, setShowRule] = useState(false);
 
     //To dispatch action to the store
-    //const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
-    //handle change in the input and update the rule
+    /*handle functions for Expedia rules */
     const createRule = (event) => {
         event.preventDefault();
         const newRule = { ...rule };
         const newRules = [...policy.rules, newRule];
         setPolicy({ ...policy, rules: newRules });
+        console.log("Rule created", newRules);
         setRule(intialRuleState);
     }
 
     const handleRuleChange = event => {
         const { name, value } = event.target;
         setRule({ ...rule, [name]: value, key: Date.now() });
-        const newRule = { ...rule };
-        const newRules = [...policy.rules, newRule];
-        //Check this setPolicy again
-        setPolicy({ ...policy, rules: newRules });
     };
 
     const deleteRule = (key) => {
@@ -58,23 +55,24 @@ const UpdateCancellationPolicy = (props) => {
         })
     }
 
-    const updateRule = (rule, key) => {
-        console.log("Rules:" + policy.rules);
-        const updateRules = { ...policy.rules }
-        updateRules.map(item => {
-            if (item.key === key) {
-                    item.id = rule.id,
-                    item.offSetDays = rule.offSetDays,
-                    item.offSetHours = rule.offSetHours,
-                    item.feeBasis = "amount",
-                    item.value = rule.value,
-                    item.curreny = rule.curreny,
-                    item.noShow = rule.noShow
+    const resetRule = () => {
+        setRule(intialRuleState);
+    }
+
+    const updateRule = (event, key) => {
+        const { name, value } = event.target;
+        const rules = JSON.parse(JSON.stringify(policy.rules));
+        const updatedRules = rules.map(item => {
+            var temp = Object.assign({}, item);
+            if (temp.key === key) {
+                return { ...temp, [name]: value }
             }
-        })
-        //Check this setting of policy's rules
-        setPolicy({...policy,rules:updateRules})
-    };
+            return temp;
+        });
+        setPolicy({ ...policy, rules: updatedRules })
+    }
+    /* end handle functions for Expedia rules */
+
     //handle change in the input and update the policy 
 
     const handleInputChange = event => {
@@ -94,40 +92,32 @@ const UpdateCancellationPolicy = (props) => {
         }
     };
 
-    const saveCancellationPolicy = (event) => {
-        //Value added to the DB and the policy that was returned in the response is used to setPolicy
+    const updateContent = (event) => {
         event.preventDefault();
-        policy.rules.map(rule => delete rule.key);
-        console.log(policy);
-        console.log(policy.rule)
-        dispatch(createCancellationPolicy(policy)).then(data => {
-            setPolicy(JSON.parse(JSON.stringify(data)));
-            setAddedPolicy(true);
-            console.log(data);
-        }).catch((error) => {
-            console.log(error);
-        });
+        dispatch(updatePolicy(policy.policyId, policy))
+            .then(response => {
+                console.log("Updated Response", response);
+                setUpdatedPolicy(true);
+            })
+            .catch(error => {
+                console.log(error);
+            });
     };
 
-    const newCancellationPolicy = () => {
-        setPolicy(intialPolicyState);
-        setAddedPolicy(false);
-        setRule(intialRuleState);
-    };
 
     return (
 
         <div>
-            <div className="alert alert-primary" role="alert">
-                Add Car Rental Cancellation Policy
-            </div>
             {/* Option to submit new Policy once the current Policy successfully added*/}
-            {addedPolicy && (
+            {updatedPolicy && (
                 <div className="alert alert-success" role="alert">
-                    You submitted successfully!
-                    <button type="button" className="btn btn-primary btn-sm float-end" onClick={newCancellationPolicy}> Add New Policy</button>
+                    Policy Updated successfully!
                 </div>)}
 
+            {(!updatedPolicy) && (
+                <div className="alert alert-primary" role="alert">
+                    Update Car Rental Cancellation Policy
+                </div>)}
             {/*Add Policy Form (including ruleset for the Expedia policy Source*/}
             <form className="d-grid gap-3">
                 <Card bg="light">
@@ -177,7 +167,7 @@ const UpdateCancellationPolicy = (props) => {
                             <div className="row ">
                                 <div className="col-auto">
                                     <div className="form-floating selectpicker">
-                                        <select className="form-select" id="policySource" name="policySource" onChange={handlePolicySource}>
+                                        <select value={policy.policySource} className="form-select" id="policySource" name="policySource" onChange={handlePolicySource}>
                                             <option value=" ">Select Source</option>
                                             <option value="expedia">Expedia</option>
                                             <option value="provider">Provider</option>
@@ -245,18 +235,18 @@ const UpdateCancellationPolicy = (props) => {
                                             </div>
                                             <div className="col">
                                                 <div className="form-floating selectpicker">
-                                                    <select className="form-select" id="curreny" name="curreny" onChange={handleRuleChange}>
+                                                    <select className="form-select" value={rule.currency} id="currency" name="currency" onChange={handleRuleChange}>
                                                         {/*selected changed to value = ""*/}
                                                         <option value="">Select</option>
                                                         <option value="USD">USD</option>
                                                         <option value="INR">INR</option>
                                                     </select>
-                                                    <label htmlFor="curreny">Curreny</label>
+                                                    <label htmlFor="currency">Currency</label>
                                                 </div>
                                             </div>
                                             <div className="col">
                                                 <div className="form-floating selectpicker">
-                                                    <select className="form-select" id="noShow" name="noShow" onChange={handleRuleChange}>
+                                                    <select className="form-select" value={rule.noShow} id="noShow" name="noShow" onChange={handleRuleChange}>
                                                         <option value="">Select</option>
                                                         <option value="NO">NO</option>
                                                         <option value="YES">YES</option>
@@ -324,14 +314,11 @@ const UpdateCancellationPolicy = (props) => {
                         </div>
                     </div>
                 </div>
-                <div className="row row-cols-1">
-                    <div className="col">
-                        <button onClick={saveCancellationPolicy} className="btn btn-primary btn-sm float-end ">
-                            Add Policy  </button>
-                    </div>
+                <div className="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <button className="btn btn-sm btn-primary me-md-2" type="button" onClick={updateContent}>Update Policy</button>
+                    <button className="btn btn-primary btn-sm " type="button" onClick={() => { props.cancelUpdate() }} >Cancel</button>
                 </div>
             </form>
-
         </div >);
 }
-export default AddCancellationPolicy;
+export default UpdateCancellationPolicy;

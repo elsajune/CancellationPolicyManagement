@@ -183,7 +183,7 @@ const AddCancellationPolicy = () => {
                             <div className="row ">
                                 <div className="col-auto">
                                     <div className="form-floating selectpicker">
-                                        <select className="form-select" id="policySource" name="policySource" onChange={handlePolicySource}>
+                                        <select className="form-select" value={policy.policySource} id="policySource" name="policySource" onChange={handlePolicySource}>
                                             <option value=" ">Select Source</option>
                                             <option value="expedia">Expedia</option>
                                             <option value="provider">Provider</option>

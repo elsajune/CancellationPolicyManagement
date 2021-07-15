@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +33,7 @@ public class CancellationPolicyController {
                 rule.setPolicy(newPolicy);
             });
             newPolicy.setRules(expediaRules);
+            newPolicy.setPolicyUpdatedOn(LocalDateTime.now());
             CancellationPolicy addedPolicy = cancellationPolicyRepository.save(newPolicy);
 
             return new ResponseEntity<>(addedPolicy, HttpStatus.CREATED);
@@ -72,7 +74,7 @@ public class CancellationPolicyController {
             selectedPolicy.setPolicySource(updatesPolicy.getPolicySource());
             selectedPolicy.setPolicyDescription(updatesPolicy.getPolicyDescription());
             selectedPolicy.setPolicyUpdatedBy(updatesPolicy.getPolicyUpdatedBy());
-            selectedPolicy.setPolicyUpdatedOn(updatesPolicy.getPolicyUpdatedOn());
+            selectedPolicy.setPolicyUpdatedOn(LocalDateTime.now());
             selectedPolicy.setPolicyCancelRestrictionDays(updatesPolicy.getPolicyCancelRestrictionDays());
             selectedPolicy.setPolicyCancelRestrictionHours(updatesPolicy.getPolicyCancelRestrictionHours());
             selectedPolicy.setRules(updatesPolicy.getRules());

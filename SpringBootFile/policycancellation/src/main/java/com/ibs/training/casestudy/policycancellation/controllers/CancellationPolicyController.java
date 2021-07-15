@@ -69,6 +69,11 @@ public class CancellationPolicyController {
     @PutMapping("/cancellationpolicies/{id}")
     public ResponseEntity<CancellationPolicy> updateCancellationPolicy(@PathVariable("id") long policyId, @RequestBody CancellationPolicy updatesPolicy) {
         Optional<CancellationPolicy> policy = cancellationPolicyRepository.findById(policyId).map((selectedPolicy) ->{
+            selectedPolicy.getRules().clear();
+            selectedPolicy.getRules().addAll(updatesPolicy.getRules());
+            selectedPolicy.getRules().forEach((rule) ->{
+                rule.setPolicy(updatesPolicy);
+            });
             selectedPolicy.setPolicyId(updatesPolicy.getPolicyId());
             selectedPolicy.setPolicyName(updatesPolicy.getPolicyName());
             selectedPolicy.setPolicySource(updatesPolicy.getPolicySource());
@@ -77,8 +82,7 @@ public class CancellationPolicyController {
             selectedPolicy.setPolicyUpdatedOn(LocalDateTime.now());
             selectedPolicy.setPolicyCancelRestrictionDays(updatesPolicy.getPolicyCancelRestrictionDays());
             selectedPolicy.setPolicyCancelRestrictionHours(updatesPolicy.getPolicyCancelRestrictionHours());
-            selectedPolicy.getRules().clear();
-            selectedPolicy.getRules().addAll(updatesPolicy.getRules());
+
             return cancellationPolicyRepository.save(selectedPolicy);
         });
         if (policy.isPresent()) {

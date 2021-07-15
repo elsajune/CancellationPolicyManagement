@@ -14,7 +14,7 @@ const AddCancellationPolicy = () => {
         policyId: 0,
         policyName: "Enter policy name",
         policyDescription: "Enter policy Descritpion",
-        policySource: "",
+        policySource: " ",
         policyCancelRestrictionDays: 0,
         policyCancelRestrictionHours: 0,
         policyUpdateBy: "",
@@ -106,6 +106,7 @@ const AddCancellationPolicy = () => {
     const saveCancellationPolicy = (event) => {
         //Value added to the DB and the policy that was returned in the response is used to setPolicy
         event.preventDefault();
+        console.log("Policy Added", policy);
         dispatch(createCancellationPolicy(policy)).then(data => {
             setPolicy(JSON.parse(JSON.stringify(data)));
             setAddedPolicy(true);
@@ -183,7 +184,8 @@ const AddCancellationPolicy = () => {
                             <div className="row ">
                                 <div className="col-auto">
                                     <div className="form-floating selectpicker">
-                                        <select className="form-select" value={policy.policySource} id="policySource" name="policySource" onChange={handlePolicySource}>
+                                        <select className="form-select" value={policy.policySource} id="policySource" name="policySource" 
+                                        onChange={(event) => { handlePolicySource(event); handleInputChange(event); }}>
                                             <option value=" ">Select Source</option>
                                             <option value="expedia">Expedia</option>
                                             <option value="provider">Provider</option>

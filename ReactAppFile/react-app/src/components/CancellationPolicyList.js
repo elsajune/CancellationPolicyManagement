@@ -10,7 +10,7 @@ import { Table } from 'react-bootstrap';
 const CancellationPolicyList = () => {
 
     const dispatch = useDispatch();
-    const policyList = useSelector((state) => { return state.policies });
+    const policyList = useSelector((state) =>  state.policyReducer );
 
     useEffect(() => {
         console.log("dispatched");
@@ -19,9 +19,9 @@ const CancellationPolicyList = () => {
 
     return (
         <div>
-            <h5 onClick={() => { console.log("policiesList from useState", policyList) }}>Cancellation Policy Table</h5>
+            <h5 onClick={() => { console.log("policiesList from useSelector", policyList) }}>Cancellation Policy Table</h5>
             {/*Check if policies is null if null display table empyt*/}
-            {data.policies ? (
+            {policyList ? (
                 <div className="container">
                     <div className="row">
                         <div className="col-md-12">
@@ -41,7 +41,7 @@ const CancellationPolicyList = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {data.policies.map((policy) => {
+                                        {policyList.map((policy) => {
                                             return (
                                                 <CancellationPolicy policy={policy} key={policy.policyId}/>
                                             );

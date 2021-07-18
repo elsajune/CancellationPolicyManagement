@@ -84,7 +84,7 @@ const CancellationPolicy = (props) => {
                             {policy.rules.map((rule) => {
                                 console.log(rule);
                                 return (
-                                    <tr>
+                                    <tr key= {Date.now()}>
                                         <td>{rule.offSetHours}</td>
                                         <td>{rule.offSetDays}</td>
                                         <td>{rule.feeBasis}</td>

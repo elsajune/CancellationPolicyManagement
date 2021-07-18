@@ -9,7 +9,7 @@ const RuleList = (props) => {
 
     const rules = props.rules;
 
-    return (<div className="d-grid gap-3">
+    return (<div className="d-grid gap-3" key={Date.now}>
         {
             rules && rules.map(rule => {
                 return (

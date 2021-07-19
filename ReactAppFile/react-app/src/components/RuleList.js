@@ -9,7 +9,7 @@ const RuleList = (props) => {
 
     const rules = props.rules;
 
-    return (<div className="d-grid gap-3" key={Date.now}>
+    return (<div className="d-grid gap-3" key={Date.now()}>
         {
             rules && rules.map(rule => {
                 return (
@@ -22,6 +22,7 @@ const RuleList = (props) => {
                                         className="form-control"
                                         id="offSetDays"
                                         required
+                                        disabled = {rule.noShow === "YES"}
                                         min="0"
                                         value={rule.offSetDays}
                                         onChange={(event) => { props.updateRule(event, rule.key) }}
@@ -37,6 +38,7 @@ const RuleList = (props) => {
                                         className="form-control"
                                         id="offSetHours"
                                         required
+                                        disabled = {rule.noShow === "YES"}
                                         min="0"
                                         value={rule.offSetHours}
                                         onChange={(event) => { props.updateRule(event, rule.key) }}

@@ -64,6 +64,10 @@ const AddCancellationPolicy = () => {
     const createRule = (event) => {
         event.preventDefault();
         const newRule = { ...rule };
+        if (rule.noShow === "YES") {
+            newRule.offSetDays = 0;
+            newRule.offSetHours = 0;
+        }
         const newRules = [...policy.rules, newRule];
         setPolicy({ ...policy, rules: newRules });
         console.log("Rule created", newRules);
@@ -91,10 +95,16 @@ const AddCancellationPolicy = () => {
         const { name, value } = event.target;
         const rules = JSON.parse(JSON.stringify(policy.rules));
         const updatedRules = rules.map(item => {
-            var temp = Object.assign({}, item);
+            let temp = Object.assign({}, item);
             if (temp.key === key) {
-                return { ...temp, [name]: value }
+                temp = { ...temp, [name]: value }
+                if (temp.noShow === "YES") {
+                    temp.offSetDays = 0;
+                    temp.offSetHours = 0;
+                }
+                return temp;
             }
+
             return temp;
         });
         setPolicy({ ...policy, rules: updatedRules })
@@ -226,7 +236,7 @@ const AddCancellationPolicy = () => {
                                     <div className="form-floating selectpicker">
                                         <select
                                             className={
-                                                (errors.policyName)
+                                                (errors.policySource)
                                                     ? "form-select is-invalid"
                                                     : "form-select"
                                             }
@@ -264,6 +274,7 @@ const AddCancellationPolicy = () => {
                                                         required
                                                         min="0"
                                                         value={rule.offSetDays}
+                                                        disabled={rule.noShow === "YES"}
                                                         onChange={handleRuleChange}
                                                         name="offSetDays"
                                                     />
@@ -279,6 +290,7 @@ const AddCancellationPolicy = () => {
                                                         required
                                                         min="0"
                                                         value={rule.offSetHours}
+                                                        disabled={rule.noShow === "YES"}
                                                         onChange={handleRuleChange}
                                                         name="offSetHours"
                                                     />

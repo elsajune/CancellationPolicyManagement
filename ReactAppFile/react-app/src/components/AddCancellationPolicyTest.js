@@ -1,17 +1,28 @@
 import { Card } from 'react-bootstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
-import React, { useState ,useEffect, useRef} from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { updatePolicy } from "../actions/actioncreator";
+import { createCancellationPolicy } from "../actions/actioncreator";
 import RuleList from "./RuleList";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faTrash,
 } from "@fortawesome/free-solid-svg-icons";
+
 import validate from '../services/validateForm';
 
-const UpdateCancellationPolicy = (props) => {
-    const intialPolicyState = JSON.parse(JSON.stringify(props.policy));
+const AddCancellationPolicy = () => {
+    const intialPolicyState = {
+        policyId: 0,
+        policyName: "Enter policy name",
+        policyDescription: "Enter policy Descritpion",
+        policySource: " ",
+        policyCancelRestrictionDays: 0,
+        policyCancelRestrictionHours: 0,
+        policyUpdateBy: "",
+        policyUpdateOn: "",
+        rules: []
+    };
 
     const intialRuleState = {
         ruleId: 0,
@@ -27,9 +38,8 @@ const UpdateCancellationPolicy = (props) => {
 
     const [rule, setRule] = useState(intialRuleState);
     const [policy, setPolicy] = useState(intialPolicyState);
-    const [updatedPolicy, setUpdatedPolicy] = useState(false);
+    const [addedPolicy, setAddedPolicy] = useState(false);
     const [showRule, setShowRule] = useState(false);
-    const mountedRef = useRef(true);
 
     //To dispatch action to the store
     const dispatch = useDispatch();
@@ -43,12 +53,12 @@ const UpdateCancellationPolicy = (props) => {
         () => {
             if (Object.keys(errors).length === 0 && isSubmitting) {
                 console.log("In UseEffect");
-                updateContent();
+                saveCancellationPolicy();
             }
-            return () => { mountedRef.current = false }
         },
         [errors]
     );
+
 
     /*handle functions for Expedia rules */
     const createRule = (event) => {
@@ -101,7 +111,25 @@ const UpdateCancellationPolicy = (props) => {
     }
     /* end handle functions for Expedia rules */
 
+
     //handle change in the input and update the policy 
+    const newCancellationPolicy = () => {
+        setPolicy(intialPolicyState);
+        setAddedPolicy(false);
+        setRule(intialRuleState);
+    };
+
+    const saveCancellationPolicy = () => {
+        //Value added to the DB and the policy that was returned in the response is used to setPolicy
+        console.log("Policy Added", policy);
+        dispatch(createCancellationPolicy(policy)).then(data => {
+            setPolicy(JSON.parse(JSON.stringify(data)));
+            setAddedPolicy(true);
+            console.log(data);
+        }).catch((error) => {
+            console.log(error);
+        });
+    };
 
     const handleInputChange = event => {
         const { name, value } = event.target;
@@ -120,37 +148,28 @@ const UpdateCancellationPolicy = (props) => {
         }
     };
 
+
     const handleSubmit = event => {
         event.preventDefault();
         setErrors(validate(policy));
         setIsSubmitting(true);
     };
 
-    const updateContent = () => {
-            const editedPolicy = JSON.parse(JSON.stringify(policy));
-        dispatch(updatePolicy(policy.policyId, policy))
-            .then(response => {
-                console.log("Updated Response", response);
-                setUpdatedPolicy(true);
-            })
-            .catch(error => {
-                console.log(error);
-            });
-    };
+
 
 
     return (
         <div>
+            <div className="alert alert-primary" role="alert">
+                Add Car Rental Cancellation Policy
+            </div>
             {/* Option to submit new Policy once the current Policy successfully added*/}
-            {updatedPolicy && (
+            {addedPolicy && (
                 <div className="alert alert-success" role="alert">
-                    Policy Updated successfully!
+                    You submitted successfully!
+                    <button type="button" className="btn btn-primary btn-sm float-end" onClick={newCancellationPolicy}> Add New Policy</button>
                 </div>)}
 
-            {(!updatedPolicy) && (
-                <div className="alert alert-primary" role="alert">
-                    Update Car Rental Cancellation Policy
-                </div>)}
             {/*Add Policy Form (including ruleset for the Expedia policy Source*/}
             <form className="d-grid gap-3" noValidate>
                 <Card bg="light">
@@ -223,12 +242,11 @@ const UpdateCancellationPolicy = (props) => {
                                             }
                                             value={policy.policySource} id="policySource" name="policySource"
                                             onChange={(event) => {
-                                                handlePolicySource(event);
+                                                handlePolicySource(event); 
                                                 handleInputChange(event);
-                                                if ((policy.rules.length === 0 && event.target.value === "expedia")) {
+                                                if ((policy.rules.length === 0 && event.target.value === "expedia")) { 
                                                     console.log("Create");
-                                                    createRule(event);
-                                                }
+                                                    createRule(event); }
                                             }}>
                                             <option value=" ">Select Source</option>
                                             <option value="expedia">Expedia</option>
@@ -306,11 +324,14 @@ const UpdateCancellationPolicy = (props) => {
                         </div>
                     </div>
                 </div>
-                <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <button className="btn btn-sm btn-primary me-md-2" type="button" onClick={handleSubmit}>Update Policy</button>
-                    <button className="btn btn-primary btn-sm " type="button" onClick={() => { props.cancelUpdate() }} >Cancel</button>
+                <div className="row row-cols-1">
+                    <div className="col">
+                        <button onClick={handleSubmit} className="btn btn-primary btn-sm float-end ">
+                            Add Policy  </button>
+                    </div>
                 </div>
             </form>
+
         </div >);
 }
-export default UpdateCancellationPolicy;
+export default AddCancellationPolicy;

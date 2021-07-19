@@ -43,7 +43,7 @@ const CancellationPolicyList = () => {
                                     <tbody>
                                         {policyList.map((policy) => {
                                             return (
-                                                <CancellationPolicy policy={policy} key={policy.policyId}/>
+                                                <CancellationPolicy policy={policy} key={Date.now()}/>
                                             );
                                         })
                                         }

@@ -12,6 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import AddCancellationPolicy from "./components/AddCancellationPolicy";
+import AddCancellationPolicyTest from "./components/AddCancellationPolicyTest";
 import CancellationPolicy from "./components/CancellationPolicy";
 import CancellationPolicyList from "./components/CancellationPolicyList";
 
@@ -37,7 +38,7 @@ export default function App() {
       <div className="container mt-3">
         <Switch>
           <Route exact path="/cancellationpolicies" component={CancellationPolicyList} />
-          <Route exact path={["/", "/add"]} component={AddCancellationPolicy} />
+          <Route exact path={["/", "/add"]} component={AddCancellationPolicyTest} />
           <Route path="/cancellationpolicies/:id" component={CancellationPolicy} />
         </Switch>
       </div>

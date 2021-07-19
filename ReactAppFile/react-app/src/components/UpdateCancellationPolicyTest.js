@@ -1,6 +1,6 @@
 import { Card } from 'react-bootstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
-import React, { useState ,useEffect, useRef} from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { updatePolicy } from "../actions/actioncreator";
 import RuleList from "./RuleList";
@@ -8,11 +8,24 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faTrash,
 } from "@fortawesome/free-solid-svg-icons";
-import validate from '../services/validateForm';
 
 const UpdateCancellationPolicy = (props) => {
-    const intialPolicyState = JSON.parse(JSON.stringify(props.policy));
 
+    const intialPolicyState = {
+        policyId: 0,
+        policyName: "Enter policy name",
+        policyDescription: "Enter policy Descritpion",
+        policySource: " ",
+        policyCancelRestrictionDays: 0,
+        policyCancelRestrictionHours: 0,
+        policyUpdateBy: "",
+        policyUpdateOn: "",
+        rules: []
+    };
+
+    if (props.location.state.policy) {
+        intialPolicyState = JSON.parse(JSON.stringify(props.location.state.policy));
+    }
     const intialRuleState = {
         ruleId: 0,
         offSetDays: 0,
@@ -20,7 +33,7 @@ const UpdateCancellationPolicy = (props) => {
         feeBasis: "amount",
         value: 0,
         currency: "USD",
-        noShow: "NO",
+        noShow: "YES",
         key: Date.now()
 
     };
@@ -29,35 +42,14 @@ const UpdateCancellationPolicy = (props) => {
     const [policy, setPolicy] = useState(intialPolicyState);
     const [updatedPolicy, setUpdatedPolicy] = useState(false);
     const [showRule, setShowRule] = useState(false);
-    const mountedRef = useRef(true);
 
     //To dispatch action to the store
     const dispatch = useDispatch();
-
-    //To validate form 
-    const [errors, setErrors] = useState({});
-    const [isSubmitting, setIsSubmitting] = useState(false);
-
-    //For form Validation
-    useEffect(
-        () => {
-            if (Object.keys(errors).length === 0 && isSubmitting) {
-                console.log("In UseEffect");
-                updateContent();
-            }
-            return () => { mountedRef.current = false }
-        },
-        [errors]
-    );
 
     /*handle functions for Expedia rules */
     const createRule = (event) => {
         event.preventDefault();
         const newRule = { ...rule };
-        if (rule.noShow === "YES") {
-            newRule.offSetDays = 0;
-            newRule.offSetHours = 0;
-        }
         const newRules = [...policy.rules, newRule];
         setPolicy({ ...policy, rules: newRules });
         console.log("Rule created", newRules);
@@ -85,16 +77,10 @@ const UpdateCancellationPolicy = (props) => {
         const { name, value } = event.target;
         const rules = JSON.parse(JSON.stringify(policy.rules));
         const updatedRules = rules.map(item => {
-            let temp = Object.assign({}, item);
+            var temp = Object.assign({}, item);
             if (temp.key === key) {
-                temp = { ...temp, [name]: value }
-                if (temp.noShow === "YES") {
-                    temp.offSetDays = 0;
-                    temp.offSetHours = 0;
-                }
-                return temp;
+                return { ...temp, [name]: value }
             }
-
             return temp;
         });
         setPolicy({ ...policy, rules: updatedRules })
@@ -120,14 +106,9 @@ const UpdateCancellationPolicy = (props) => {
         }
     };
 
-    const handleSubmit = event => {
+    const updateContent = (event) => {
         event.preventDefault();
-        setErrors(validate(policy));
-        setIsSubmitting(true);
-    };
-
-    const updateContent = () => {
-            const editedPolicy = JSON.parse(JSON.stringify(policy));
+        const editedPolicy = JSON.parse(JSON.stringify(policy));
         dispatch(updatePolicy(policy.policyId, policy))
             .then(response => {
                 console.log("Updated Response", response);
@@ -140,6 +121,7 @@ const UpdateCancellationPolicy = (props) => {
 
 
     return (
+
         <div>
             {/* Option to submit new Policy once the current Policy successfully added*/}
             {updatedPolicy && (
@@ -152,7 +134,7 @@ const UpdateCancellationPolicy = (props) => {
                     Update Car Rental Cancellation Policy
                 </div>)}
             {/*Add Policy Form (including ruleset for the Expedia policy Source*/}
-            <form className="d-grid gap-3" noValidate>
+            <form className="d-grid gap-3">
                 <Card bg="light">
                     <Card.Body>
                         <div className="container">
@@ -162,22 +144,14 @@ const UpdateCancellationPolicy = (props) => {
                                     <div className="form-floating">
                                         <input
                                             type="text"
-                                            className={
-                                                (errors.policyName)
-                                                    ? "form-control is-invalid"
-                                                    : "form-control"
-                                            }
+                                            className="form-control"
                                             id="policyName"
                                             required
                                             value={policy.policyName}
                                             onChange={handleInputChange}
                                             name="policyName"
-                                            placeholder="Enter Policy Name"
                                         />
                                         <label htmlFor="policyName">Policy Name</label>
-                                        <div className="invalid-feedback">
-                                            Enter policy Name
-                                        </div>
                                     </div>
                                 </div>
 
@@ -185,11 +159,7 @@ const UpdateCancellationPolicy = (props) => {
                                     <div className="form-floating">
                                         <input
                                             type="text"
-                                            className={
-                                                (errors.policyDescription)
-                                                    ? "form-control is-invalid"
-                                                    : "form-control"
-                                            }
+                                            className="form-control"
                                             id="policyDescription"
                                             required
                                             value={policy.policyDescription}
@@ -197,9 +167,6 @@ const UpdateCancellationPolicy = (props) => {
                                             name="policyDescription"
                                         />
                                         <label htmlFor="policyDescription">Policy Description</label>
-                                        <div className="invalid-feedback">
-                                            Enter policy Description
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -215,29 +182,13 @@ const UpdateCancellationPolicy = (props) => {
                             <div className="row ">
                                 <div className="col-auto">
                                     <div className="form-floating selectpicker">
-                                        <select
-                                            className={
-                                                (errors.policySource)
-                                                    ? "form-select is-invalid"
-                                                    : "form-select"
-                                            }
-                                            value={policy.policySource} id="policySource" name="policySource"
-                                            onChange={(event) => {
-                                                handlePolicySource(event);
-                                                handleInputChange(event);
-                                                if ((policy.rules.length === 0 && event.target.value === "expedia")) {
-                                                    console.log("Create");
-                                                    createRule(event);
-                                                }
-                                            }}>
+                                        {/*Error in saving check again*/}
+                                        <select className="form-select" id="policySource" name="policySource" onChange={handlePolicySource}>
                                             <option value=" ">Select Source</option>
                                             <option value="expedia">Expedia</option>
                                             <option value="provider">Provider</option>
                                         </select>
                                         <label htmlFor="policySource">Policy Source</label>
-                                        <div className="invalid-feedback">
-                                            Select Policy Source
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -251,9 +202,82 @@ const UpdateCancellationPolicy = (props) => {
 
                                 {/*Adding Rule for Expedia*/}
                                 <div className="container">
-                                    <div className="row row-cols-1">
-                                        <div className="col">
-                                            <button className="btn btn-primary btn-sm float-end" onClick={createRule}>+Add Rule</button>
+                                    <div>
+                                        <div className="row row-cols-6 justify-content-center h-100 v-100">
+                                            <div className="col">
+                                                <div className="form-floating">
+                                                    <input
+                                                        type="number"
+                                                        className="form-control"
+                                                        id="offSetDays"
+                                                        required
+                                                        min="0"
+                                                        value={rule.offSetDays}
+                                                        onChange={handleRuleChange}
+                                                        name="offSetDays"
+                                                    />
+                                                    <label htmlFor="offSetDays">Offset Days</label>
+                                                </div>
+                                            </div>
+                                            <div className="col">
+                                                <div className="form-floating">
+                                                    <input
+                                                        type="number"
+                                                        className="form-control"
+                                                        id="offSetHours"
+                                                        required
+                                                        min="0"
+                                                        value={rule.offSetHours}
+                                                        onChange={handleRuleChange}
+                                                        name="offSetHours"
+                                                    />
+                                                    <label htmlFor="offSetHours">Offset Hours</label>
+                                                </div>
+                                            </div>
+                                            <div className="col">
+                                                <div className="form-floating">
+                                                    <input
+                                                        type="number"
+                                                        className="form-control"
+                                                        id="value"
+                                                        required
+                                                        min="0"
+                                                        value={rule.value}
+                                                        onChange={handleRuleChange}
+                                                        name="value"
+                                                    />
+                                                    <label htmlFor="value">Value</label>
+                                                </div>
+                                            </div>
+                                            <div className="col">
+                                                <div className="form-floating selectpicker">
+                                                    <select className="form-select" value={rule.currency} id="currency" name="currency" onChange={handleRuleChange}>
+                                                        {/*selected changed to value = ""*/}
+                                                        <option value="">Select</option>
+                                                        <option value="USD">USD</option>
+                                                        <option value="INR">INR</option>
+                                                    </select>
+                                                    <label htmlFor="currency">Currency</label>
+                                                </div>
+                                            </div>
+                                            <div className="col">
+                                                <div className="form-floating selectpicker">
+                                                    <select className="form-select" value={rule.noShow} id="noShow" name="noShow" onChange={handleRuleChange}>
+                                                        <option value="">Select</option>
+                                                        <option value="NO">NO</option>
+                                                        <option value="YES">YES</option>
+                                                    </select>
+                                                    <label htmlFor="noShow">No Show:</label>
+                                                </div>
+                                            </div>
+                                            <div className="col-md-auto my-auto">
+                                                <FontAwesomeIcon onClick={deleteRule} icon={faTrash} />
+                                            </div>
+                                        </div>
+                                        <div className="row row-cols-1">
+                                            <div className="col">
+                                                <button className="btn btn-primary btn-sm float-end" onClick={createRule}>+Add Rule</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -307,7 +331,7 @@ const UpdateCancellationPolicy = (props) => {
                     </div>
                 </div>
                 <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <button className="btn btn-sm btn-primary me-md-2" type="button" onClick={handleSubmit}>Update Policy</button>
+                    <button className="btn btn-sm btn-primary me-md-2" type="button" onClick={updateContent}>Update Policy</button>
                     <button className="btn btn-primary btn-sm " type="button" onClick={() => { props.cancelUpdate() }} >Cancel</button>
                 </div>
             </form>

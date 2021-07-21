@@ -14,8 +14,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class PolicyCancellationServiceImplTestVtwo {
@@ -58,12 +62,39 @@ class PolicyCancellationServiceImplTestVtwo {
 
     @Test
     //Test Case for Saving a Policy
-    public void givenPolicyToAddShouldReturnAddedPolicy() throws Exception{
+    public void givenPolicyToAddShouldReturnAddedPolicy() throws Exception {
 
-
+        when(cancellationPolicyRepository.save(any())).thenReturn(cancellationPolicyA);
+        policyCancellationServiceImpl.addCancellationPolicy(cancellationPolicyA);
+        verify(cancellationPolicyRepository, times(1)).save(any());
 
     }
 
+    @Test
+    //Test Code for Retrieval of all Policies
+    public void givenGetAllPoliciesShouldReturnListOfPolicies() throws Exception {
+        cancellationPolicyRepository.save(cancellationPolicyA);
+        when(cancellationPolicyRepository.findAll()).thenReturn(cancellationPolicyList);
+        List<CancellationPolicy> fetchedPoliciesList = policyCancellationServiceImpl.retrievePolicies();
+        assertEquals(fetchedPoliciesList, cancellationPolicyList);
+        verify(cancellationPolicyRepository, times(1)).save(any());
+        verify(cancellationPolicyRepository, times(1)).findAll();
+    }
+
+   /*  @Test
+    //Test Code for Retrieval of Policy of Given ID
+   public void givenIdShouldReturnPolicyOfTheID(){
+    when(cancellationPolicyRepository.findById(1).thenReturn(Optional.ofNullable(cancellationPolicyA)));
+    assertThat(productService.getProductByid(product1.getId())).isEqualTo(product1);
+    assertThat()
+    }*/
+
+    /*@Test
+    //Test Case to Delete a Policy by Id
+    public void givenIdShouldDeletePolicyOfThatId() throws Exception {
+        doNothing().when(cancellationPolicyRepository).deleteById(cancellationPolicyA.getPolicyId());
+        verify(cancellationPolicyRepository,times(1)).findAll();
+    }*/
 
 
     @AfterEach

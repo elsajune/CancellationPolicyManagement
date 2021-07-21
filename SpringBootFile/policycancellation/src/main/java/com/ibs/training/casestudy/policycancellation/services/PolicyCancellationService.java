@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PolicyCancellationService {
-    CancellationPolicy addCancellationPolicy(CancellationPolicy newPolicy);
-    List<CancellationPolicy> retrievePolicies();
+    CancellationPolicy addCancellationPolicy(CancellationPolicy newPolicy) throws Exception;
+    List<CancellationPolicy> retrievePolicies() throws Exception ;
     Optional<CancellationPolicy> updatePolicy(long policyId, CancellationPolicy editedPolicy);
-    void deletePolicy(long policyId);
+    void deletePolicy(long policyId) throws Exception;
 
 }

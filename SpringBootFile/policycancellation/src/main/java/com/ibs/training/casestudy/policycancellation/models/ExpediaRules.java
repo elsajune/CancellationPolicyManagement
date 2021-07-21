@@ -36,6 +36,20 @@ public class ExpediaRules{
     @JsonIgnore
     private CancellationPolicy policy;
 
+    public ExpediaRules(){
+    }
+
+    public ExpediaRules(long ruleId, int offSetHours, int offSetDays, String feeBasis, int value, String currency, String noShow, CancellationPolicy policy) {
+        this.ruleId = ruleId;
+        this.offSetHours = offSetHours;
+        this.offSetDays = offSetDays;
+        this.feeBasis = feeBasis;
+        this.value = value;
+        this.currency = currency;
+        this.noShow = noShow;
+        this.policy = policy;
+    }
+
     public long getRuleId() {
         return ruleId;
     }

@@ -43,6 +43,23 @@ public class CancellationPolicy {
     @OneToMany(mappedBy = "policy" , fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ExpediaRules> rules;
 
+    public CancellationPolicy(){
+    }
+
+    public CancellationPolicy(long policyId, String policyName, String policyDescription,
+                              String policySource, int policyCancelRestrictionDays, int policyCancelRestrictionHours,
+                              String policyUpdatedBy, LocalDateTime policyUpdatedOn) {
+        this.policyId = policyId;
+        this.policyName = policyName;
+        this.policyDescription = policyDescription;
+        this.policySource = policySource;
+        this.policyCancelRestrictionDays = policyCancelRestrictionDays;
+        this.policyCancelRestrictionHours = policyCancelRestrictionHours;
+        this.policyUpdatedBy = policyUpdatedBy;
+        this.policyUpdatedOn = policyUpdatedOn;
+
+    }
+
     public long getPolicyId() {
         return policyId;
     }

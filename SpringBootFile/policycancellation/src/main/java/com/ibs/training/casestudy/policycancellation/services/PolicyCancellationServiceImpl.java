@@ -23,6 +23,7 @@ public class PolicyCancellationServiceImpl implements PolicyCancellationService 
         expediaRules.forEach((rule) -> {
                 rule.setPolicy(newPolicy);
             });
+        
         newPolicy.setRules(expediaRules);
         newPolicy.setPolicyUpdatedOn();
         newPolicy.setPolicyUpdatedBy("Tester");

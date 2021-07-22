@@ -111,7 +111,6 @@ const UpdateCancellationPolicy = (props) => {
             setShowRule(true);
         } else {
             setShowRule(false);
-            setRule({});
             setPolicy({
                 ...policy, rules: []
             });
@@ -121,6 +120,11 @@ const UpdateCancellationPolicy = (props) => {
 
     const handleSubmit = event => {
         event.preventDefault();
+        if(policy.policySource !== "expedia"){
+            setPolicy({
+                ...policy, rules: []
+            });
+        }
         setErrors(validate(policy));
         setIsSubmitting(true);
     };

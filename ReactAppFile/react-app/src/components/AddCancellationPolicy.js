@@ -86,6 +86,7 @@ const AddCancellationPolicy = () => {
                     temp.offSetDays = 0;
                     temp.offSetHours = 0;
                 }
+                temp.feeBasis = "amount";
                 return temp;
             }
 
@@ -124,6 +125,11 @@ const AddCancellationPolicy = () => {
     const handleSubmit = event => {
         event.preventDefault();
         console.log("Testing Policy Validate",policy);
+        if(policy.policySource !== "expedia"){
+            setPolicy({
+                ...policy, rules: []
+            });
+        }
         setErrors(validate(policy));
         setIsSubmitting(true);
     };

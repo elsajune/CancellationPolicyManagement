@@ -5,12 +5,13 @@ export default function validateForm(policy) {
       errors.policyName = 'Policy Name required';
     }
 
-    if (!policy.policyDescription.trim()||(policy.policyDescription === "Enter policy Descritpion")) {
-        errors.policyDescription = 'Policy Descrption required';
+    if (!policy.policyDescription.trim()||(policy.policyDescription === "Enter policy Description")) {
+        errors.policyDescription = 'Policy Description required';
       }
 
     if(!policy.policySource.trim()){
       errors.policySource = "Select Policy Source"
     }
+    
     return errors;
   }

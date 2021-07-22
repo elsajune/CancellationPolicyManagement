@@ -2,21 +2,17 @@ import { Card } from 'react-bootstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
+
 import { createCancellationPolicy } from "../actions/actioncreator";
 import RuleList from "./RuleList";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-    faTrash,
-} from "@fortawesome/free-solid-svg-icons";
-
 import validate from '../services/validateForm';
 
 const AddCancellationPolicy = () => {
     const intialPolicyState = {
         policyId: 0,
-        policyName: "Enter policy name",
-        policyDescription: "Enter policy Descritpion",
-        policySource: " ",
+        policyName: "",
+        policyDescription: "",
+        policySource: "",
         policyCancelRestrictionDays: 0,
         policyCancelRestrictionHours: 0,
         policyUpdateBy: "",
@@ -30,10 +26,9 @@ const AddCancellationPolicy = () => {
         offSetHours: 0,
         feeBasis: "amount",
         value: 0,
-        currency: " ",
-        noShow: " ",
+        currency: "USD",
+        noShow: "NO",
         key: Date.now()
-
     };
 
     const [rule, setRule] = useState(intialRuleState);
@@ -41,7 +36,6 @@ const AddCancellationPolicy = () => {
     const [addedPolicy, setAddedPolicy] = useState(false);
     const [showRule, setShowRule] = useState(false);
 
-    //To dispatch action to the store
     const dispatch = useDispatch();
 
     //To validate form 
@@ -52,8 +46,7 @@ const AddCancellationPolicy = () => {
     useEffect(
         () => {
             if (Object.keys(errors).length === 0 && isSubmitting) {
-                console.log("In UseEffect");
-                saveCancellationPolicy();
+                    saveCancellationPolicy();
             }
         },
         [errors]
@@ -74,21 +67,12 @@ const AddCancellationPolicy = () => {
         setRule(intialRuleState);
     }
 
-    const handleRuleChange = event => {
-        const { name, value } = event.target;
-        setRule({ ...rule, [name]: value, key: Date.now() });
-    };
-
     const deleteRule = (key) => {
         const filteredRules = policy.rules.filter(item =>
             item.key !== key);
         setPolicy({
             ...policy, rules: filteredRules
         })
-    }
-
-    const resetRule = () => {
-        setRule(intialRuleState);
     }
 
     const updateRule = (event, key) => {
@@ -119,18 +103,6 @@ const AddCancellationPolicy = () => {
         setRule(intialRuleState);
     };
 
-    const saveCancellationPolicy = () => {
-        //Value added to the DB and the policy that was returned in the response is used to setPolicy
-        console.log("Policy Added", policy);
-        dispatch(createCancellationPolicy(policy)).then(data => {
-            setPolicy(JSON.parse(JSON.stringify(data)));
-            setAddedPolicy(true);
-            console.log(data);
-        }).catch((error) => {
-            console.log(error);
-        });
-    };
-
     const handleInputChange = event => {
         const { name, value } = event.target;
         setPolicy({ ...policy, [name]: value });
@@ -140,6 +112,7 @@ const AddCancellationPolicy = () => {
         const { value } = event.target;
         if (value === "expedia") {
             setShowRule(true);
+            setRule({intialRuleState});
         } else {
             setShowRule(false);
             setPolicy({
@@ -148,14 +121,23 @@ const AddCancellationPolicy = () => {
         }
     };
 
-
     const handleSubmit = event => {
         event.preventDefault();
+        console.log("Testing Policy Validate",policy);
         setErrors(validate(policy));
         setIsSubmitting(true);
     };
 
-
+   
+    const saveCancellationPolicy = () => {
+        console.log("Policy To Be Added", policy);
+        dispatch(createCancellationPolicy(policy)).then(data => {
+            setPolicy(JSON.parse(JSON.stringify(data)));
+            setAddedPolicy(true);
+        }).catch((error) => {
+            console.log(error);
+        });
+    };
 
 
     return (
@@ -214,6 +196,7 @@ const AddCancellationPolicy = () => {
                                             value={policy.policyDescription}
                                             onChange={handleInputChange}
                                             name="policyDescription"
+                                            placeholder="Enter Policy Description"
                                         />
                                         <label htmlFor="policyDescription">Policy Description</label>
                                         <div className="invalid-feedback">
@@ -240,9 +223,15 @@ const AddCancellationPolicy = () => {
                                                     ? "form-select is-invalid"
                                                     : "form-select"
                                             }
-                                            value={policy.policySource} id="policySource" name="policySource"
-                                            onChange={(event) => { handlePolicySource(event); handleInputChange(event); }}>
-                                            <option value=" ">Select Source</option>
+                                            id="policySource" name="policySource"
+                                            onChange={(event) => {
+                                                handlePolicySource(event);
+                                                handleInputChange(event);
+                                                /*if ((policy.rules.length === 0 && event.target.value === "expedia")) {
+                                                    createRule(event);
+                                                } */
+                                            }}>
+                                            <option value="">Select Source</option>
                                             <option value="expedia">Expedia</option>
                                             <option value="provider">Provider</option>
                                         </select>
@@ -263,84 +252,9 @@ const AddCancellationPolicy = () => {
 
                                 {/*Adding Rule for Expedia*/}
                                 <div className="container">
-                                    <div>
-                                        <div className="row row-cols-6 justify-content-center h-100 v-100">
-                                            <div className="col">
-                                                <div className="form-floating">
-                                                    <input
-                                                        type="number"
-                                                        className="form-control"
-                                                        id="offSetDays"
-                                                        required
-                                                        min="0"
-                                                        value={rule.offSetDays}
-                                                        disabled={rule.noShow === "YES"}
-                                                        onChange={handleRuleChange}
-                                                        name="offSetDays"
-                                                    />
-                                                    <label htmlFor="offSetDays">Offset Days</label>
-                                                </div>
-                                            </div>
-                                            <div className="col">
-                                                <div className="form-floating">
-                                                    <input
-                                                        type="number"
-                                                        className="form-control"
-                                                        id="offSetHours"
-                                                        required
-                                                        min="0"
-                                                        value={rule.offSetHours}
-                                                        disabled={rule.noShow === "YES"}
-                                                        onChange={handleRuleChange}
-                                                        name="offSetHours"
-                                                    />
-                                                    <label htmlFor="offSetHours">Offset Hours</label>
-                                                </div>
-                                            </div>
-                                            <div className="col">
-                                                <div className="form-floating">
-                                                    <input
-                                                        type="number"
-                                                        className="form-control"
-                                                        id="value"
-                                                        required
-                                                        min="0"
-                                                        value={rule.value}
-                                                        onChange={handleRuleChange}
-                                                        name="value"
-                                                    />
-                                                    <label htmlFor="value">Value</label>
-                                                </div>
-                                            </div>
-                                            <div className="col">
-                                                <div className="form-floating selectpicker">
-                                                    <select value={rule.currency} className="form-select" id="currency" name="currency" onChange={handleRuleChange}>
-                                                        {/*selected changed to value = ""*/}
-                                                        <option value=" ">Select</option>
-                                                        <option value="USD">USD</option>
-                                                        <option value="INR">INR</option>
-                                                    </select>
-                                                    <label htmlFor="currency">Currency</label>
-                                                </div>
-                                            </div>
-                                            <div className="col">
-                                                <div className="form-floating selectpicker">
-                                                    <select value={rule.noShow} className="form-select" id="noShow" name="noShow" onChange={handleRuleChange}>
-                                                        <option value=" ">Select</option>
-                                                        <option value="NO">NO</option>
-                                                        <option value="YES">YES</option>
-                                                    </select>
-                                                    <label htmlFor="noShow">No Show:</label>
-                                                </div>
-                                            </div>
-                                            <div className="col-md-auto my-auto">
-                                                <FontAwesomeIcon onClick={resetRule} icon={faTrash} />
-                                            </div>
-                                        </div>
-                                        <div className="row row-cols-1">
-                                            <div className="col">
-                                                <button className="btn btn-primary btn-sm float-end" onClick={createRule}>+Add Rule</button>
-                                            </div>
+                                    <div className="row row-cols-1">
+                                        <div className="col">
+                                            <button className="btn btn-primary btn-sm float-end" onClick={createRule}>+Add Rule</button>
                                         </div>
                                     </div>
                                 </div>

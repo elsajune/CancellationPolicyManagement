@@ -4,13 +4,18 @@ import React, { useState ,useEffect, useRef} from "react";
 import { useDispatch } from "react-redux";
 import { updatePolicy } from "../actions/actioncreator";
 import RuleList from "./RuleList";
+import { useHistory } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-    faTrash,
+    faWindowClose
 } from "@fortawesome/free-solid-svg-icons";
+
 import validate from '../services/validateForm';
 
 const UpdateCancellationPolicy = (props) => {
+
+    let history = useHistory();
+
     const intialPolicyState = JSON.parse(JSON.stringify(props.policy));
 
     const intialRuleState = {
@@ -64,21 +69,12 @@ const UpdateCancellationPolicy = (props) => {
         setRule(intialRuleState);
     }
 
-    const handleRuleChange = event => {
-        const { name, value } = event.target;
-        setRule({ ...rule, [name]: value, key: Date.now() });
-    };
-
     const deleteRule = (key) => {
         const filteredRules = policy.rules.filter(item =>
             item.key !== key);
         setPolicy({
             ...policy, rules: filteredRules
         })
-    }
-
-    const resetRule = () => {
-        setRule(intialRuleState);
     }
 
     const updateRule = (event, key) => {
@@ -100,6 +96,7 @@ const UpdateCancellationPolicy = (props) => {
         setPolicy({ ...policy, rules: updatedRules })
     }
     /* end handle functions for Expedia rules */
+    
 
     //handle change in the input and update the policy 
 
@@ -114,9 +111,11 @@ const UpdateCancellationPolicy = (props) => {
             setShowRule(true);
         } else {
             setShowRule(false);
+            setRule({});
             setPolicy({
                 ...policy, rules: []
-            })
+            });
+           
         }
     };
 
@@ -127,11 +126,11 @@ const UpdateCancellationPolicy = (props) => {
     };
 
     const updateContent = () => {
-            const editedPolicy = JSON.parse(JSON.stringify(policy));
         dispatch(updatePolicy(policy.policyId, policy))
             .then(response => {
                 console.log("Updated Response", response);
                 setUpdatedPolicy(true);
+                history.push("/cancellationpolicies");
             })
             .catch(error => {
                 console.log(error);
@@ -145,14 +144,17 @@ const UpdateCancellationPolicy = (props) => {
             {updatedPolicy && (
                 <div className="alert alert-success" role="alert">
                     Policy Updated successfully!
+                    <FontAwesomeIcon onClick={() => { props.cancelUpdate() }} icon={faWindowClose}  className="float-end" />
+                   
                 </div>)}
 
             {(!updatedPolicy) && (
                 <div className="alert alert-primary" role="alert">
                     Update Car Rental Cancellation Policy
+                    <FontAwesomeIcon onClick={() => { props.cancelUpdate() }} icon={faWindowClose}  className="float-end" />
                 </div>)}
             {/*Add Policy Form (including ruleset for the Expedia policy Source*/}
-            <form className="d-grid gap-3" noValidate>
+                {(!updatedPolicy) && ( <form className="d-grid gap-3" noValidate>
                 <Card bg="light">
                     <Card.Body>
                         <div className="container">
@@ -221,14 +223,14 @@ const UpdateCancellationPolicy = (props) => {
                                                     ? "form-select is-invalid"
                                                     : "form-select"
                                             }
-                                            value={policy.policySource} id="policySource" name="policySource"
+                                            id="policySource" name="policySource"
                                             onChange={(event) => {
                                                 handlePolicySource(event);
                                                 handleInputChange(event);
-                                                if ((policy.rules.length === 0 && event.target.value === "expedia")) {
-                                                    console.log("Create");
+                                               /* if ((policy.rules.length === 0 && event.target.value === "expedia")) {
+                                                    console.log("Policy Source",event.target.value)
                                                     createRule(event);
-                                                }
+                                                }*/
                                             }}>
                                             <option value=" ">Select Source</option>
                                             <option value="expedia">Expedia</option>
@@ -310,7 +312,7 @@ const UpdateCancellationPolicy = (props) => {
                     <button className="btn btn-sm btn-primary me-md-2" type="button" onClick={handleSubmit}>Update Policy</button>
                     <button className="btn btn-primary btn-sm " type="button" onClick={() => { props.cancelUpdate() }} >Cancel</button>
                 </div>
-            </form>
+            </form> )}
         </div >);
 }
 export default UpdateCancellationPolicy;

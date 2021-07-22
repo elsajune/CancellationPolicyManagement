@@ -98,7 +98,7 @@ public class ExpediaRules{
         this.currency = currency;
     }
 
-    public String isNoShow() {
+    public String getNoShow() {
         return noShow;
     }
 

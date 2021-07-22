@@ -26,16 +26,18 @@ function policyReducer(policies = initialState, action) {
         case UPDATE_POLICY:
             //Check again the deep copy
             return policies.map((policy) => {
-                if (policy.id === payload.id) {
+                if (policy.policyId === payload.policyId) {
                     policy = { ...policy, ...payload }
                     //return { ...policy, [rules] : {...payload.rules} }
+                    console.log("Testing Update", { ...policy, ...payload });
                     return ({ ...policy, ...payload });
+                } else {
+                    return policy;
                 }
-                return policy;
             });
 
         case DELETE_POLICY:
-            return policies.filter(({ id }) => id !== payload.id);
+            return policies.filter(({ policyId }) => policyId !== payload.policyId);
 
         default:
             return JSON.parse(JSON.stringify(policies));

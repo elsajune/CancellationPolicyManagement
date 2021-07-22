@@ -1,9 +1,6 @@
 package com.ibs.training.casestudy.policycancellation.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -35,9 +32,9 @@ public class CancellationPolicy {
     @Column(name = "UPDATED_BY")
     private String policyUpdatedBy;
 
-    @Column(name = "UPDATED_ON")
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-   // @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column(name = "UPDATED_ON",columnDefinition = "TIMESTAMP")
+    //@JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime policyUpdatedOn;
 
     @OneToMany(mappedBy = "policy" , fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -120,8 +117,8 @@ public class CancellationPolicy {
         return policyUpdatedOn;
     }
 
-    public void setPolicyUpdatedOn(LocalDateTime policyUpdateOn) {
-        this.policyUpdatedOn = policyUpdatedOn;
+    public void setPolicyUpdatedOn() {
+        this.policyUpdatedOn = LocalDateTime.now();
     }
 
     public List<ExpediaRules> getRules() {

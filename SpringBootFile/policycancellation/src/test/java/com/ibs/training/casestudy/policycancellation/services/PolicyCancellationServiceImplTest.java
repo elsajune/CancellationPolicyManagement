@@ -35,10 +35,6 @@ public class PolicyCancellationServiceImplTest {
     @InjectMocks
     private PolicyCancellationServiceImpl policyCancellationServiceImpl;
 
-   /* @BeforeEach
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-    }*/
 
     @Test
     void whenSavePolicy_shouldReturnPolicy() throws Exception {

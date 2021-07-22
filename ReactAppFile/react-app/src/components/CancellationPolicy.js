@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import { useDispatch } from "react-redux";
-import { updatePolicy, deletePolicy } from "../actions/actioncreator";
+import {  deletePolicy } from "../actions/actioncreator";
 import { useHistory } from "react-router-dom";
-import { faAngleRight, faAngleDown, faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faAngleRight, faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import UpdateCancellationPolicy from "./UpdateCancellationPolicy";
 
@@ -17,7 +17,7 @@ const CancellationPolicy = (props) => {
     const dispatch = useDispatch();
     let history = useHistory();
 
-    //OnClick show the rules table if present
+    //On Clicking arrow icon show the rules table if present
     const handleArrowClick = () => {
         if (icon === "faAngleRight") {
             setIcon("faAngleDown");
@@ -28,14 +28,15 @@ const CancellationPolicy = (props) => {
         }
     }
 
+    //On Clicking edit icon enable policy update
     const handleEditClick = () => {
         setUpdatePolicy(true);
     }
 
     const cancelUpdate = () => {
         setUpdatePolicy(false);
+        
     }
-
 
     const removePolicy = (policy) => {
         console.log(policy.policyId);
@@ -67,7 +68,7 @@ const CancellationPolicy = (props) => {
         </tr>
         <tr>
             {
-                (policy.rules.length !== 0) && showRules && (<td colSpan="9">
+               policy.rules && (policy.rules.length !== 0) && showRules && (<td colSpan="9">
                     <table className="table table-bordered" >
                         <thead >
                             <tr style={{ textAlign: "center" }}>
@@ -84,7 +85,7 @@ const CancellationPolicy = (props) => {
                             {policy.rules.map((rule) => {
                                 console.log(rule);
                                 return (
-                                    <tr key= {Date.now()}>
+                                    <tr key={Date.now()}>
                                         <td>{rule.offSetHours}</td>
                                         <td>{rule.offSetDays}</td>
                                         <td>{rule.feeBasis}</td>
@@ -101,6 +102,8 @@ const CancellationPolicy = (props) => {
                 </td>
                 )
             }
+        </tr>
+        <tr>
             {
                 updatePolicy && (<td style={{ backgroundColor: "#dad5de" }} colSpan="9"><UpdateCancellationPolicy policy={policy} cancelUpdate={cancelUpdate} /></td>)
 

@@ -2,8 +2,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faTrash,
 } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
-
 
 const RuleList = (props) => {
 
@@ -40,6 +38,7 @@ const RuleList = (props) => {
                                         required
                                         disabled = {rule.noShow === "YES"}
                                         min="0"
+                                        max = "23"
                                         value={rule.offSetHours}
                                         onChange={(event) => { props.updateRule(event, rule.key) }}
                                         name="offSetHours"

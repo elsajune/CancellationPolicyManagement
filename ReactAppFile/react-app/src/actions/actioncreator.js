@@ -17,7 +17,7 @@ export const createCancellationPolicy = (policy) => async (dispatch) => {
         });
         return Promise.resolve(response.data);
     } catch (error) {
-        return Promise.reject(error)
+        return Promise.reject(error);
     }
 };
 

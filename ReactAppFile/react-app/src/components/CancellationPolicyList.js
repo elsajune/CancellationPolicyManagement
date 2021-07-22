@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
     retrievePolicy,
 } from "../actions/actioncreator";
-import data from "../data.json";
+
 import CancellationPolicy from "./CancellationPolicy";
 import { Table } from 'react-bootstrap';
 
@@ -13,14 +13,13 @@ const CancellationPolicyList = () => {
     const policyList = useSelector((state) =>  state.policyReducer );
 
     useEffect(() => {
-        console.log("dispatched");
         dispatch(retrievePolicy());
     }, [dispatch]);
 
     return (
         <div>
-            <h5 onClick={() => { console.log("policiesList from useSelector", policyList) }}>Cancellation Policy Table</h5>
-            {/*Check if policies is null if null display table empyt*/}
+            <h5>Cancellation Policy Table</h5>
+            {/*Check if policies is null if null display table empty*/}
             {policyList ? (
                 <div className="container">
                     <div className="row">
@@ -41,9 +40,9 @@ const CancellationPolicyList = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {policyList.map((policy) => {
+                                        {policyList && policyList.map((policy) => {
                                             return (
-                                                <CancellationPolicy policy={policy} key={Date.now()}/>
+                                                <CancellationPolicy policy={policy} key={policy.policyId}/>
                                             );
                                         })
                                         }

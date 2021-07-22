@@ -88,6 +88,7 @@ const UpdateCancellationPolicy = (props) => {
                     temp.offSetDays = 0;
                     temp.offSetHours = 0;
                 }
+                temp.feeBasis ="amount"
                 return temp;
             }
 
@@ -135,6 +136,7 @@ const UpdateCancellationPolicy = (props) => {
                 console.log("Updated Response", response);
                 setUpdatedPolicy(true);
                 history.push("/cancellationpolicies");
+                window.location.reload(false);
             })
             .catch(error => {
                 console.log(error);
@@ -227,6 +229,7 @@ const UpdateCancellationPolicy = (props) => {
                                                     ? "form-select is-invalid"
                                                     : "form-select"
                                             }
+                                            value = {policy.policySource}
                                             id="policySource" name="policySource"
                                             onChange={(event) => {
                                                 handlePolicySource(event);

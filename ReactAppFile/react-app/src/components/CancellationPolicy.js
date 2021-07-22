@@ -44,6 +44,7 @@ const CancellationPolicy = (props) => {
             .then(() => {
                 /*to refresh the page*/
                 history.push("/cancellationpolicies");
+                window.location.reload(false);
             })
             .catch(error => {
                 console.log(error);

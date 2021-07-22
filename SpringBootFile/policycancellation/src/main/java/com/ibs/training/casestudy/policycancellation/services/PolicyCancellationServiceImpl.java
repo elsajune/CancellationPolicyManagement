@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -17,12 +16,12 @@ public class PolicyCancellationServiceImpl implements PolicyCancellationService 
     @Autowired
     CancellationPolicyRepository cancellationPolicyRepository;
 
-
+    //Method to add Cancellation Policy and return added policy
     public CancellationPolicy addCancellationPolicy(CancellationPolicy newPolicy) throws Exception {
         List<ExpediaRules> expediaRules = newPolicy.getRules();
         expediaRules.forEach((rule) -> {
-                rule.setPolicy(newPolicy);
-            });
+            rule.setPolicy(newPolicy);
+        });
         newPolicy.setRules(expediaRules);
         newPolicy.setPolicyUpdatedOn();
         newPolicy.setPolicyUpdatedBy("Tester");
@@ -30,13 +29,15 @@ public class PolicyCancellationServiceImpl implements PolicyCancellationService 
         return addedPolicy;
     }
 
+    //Method to retrieve all policies
     public List<CancellationPolicy> retrievePolicies() throws Exception {
         List<CancellationPolicy> policies = new ArrayList<CancellationPolicy>();
         cancellationPolicyRepository.findAll().forEach(policies::add);
         return policies;
     }
 
-    public Optional<CancellationPolicy> updatePolicy(long policyId, CancellationPolicy editedPolicy) {
+    //Method to update policy of the given id and return updated policy
+    public Optional<CancellationPolicy> updatePolicy(long policyId, CancellationPolicy editedPolicy) throws Exception{
         Optional<CancellationPolicy> updatedPolicy = cancellationPolicyRepository.findById(policyId).map((selectedPolicy) -> {
             selectedPolicy.getRules().clear();
             selectedPolicy.getRules().addAll(editedPolicy.getRules());
@@ -56,6 +57,7 @@ public class PolicyCancellationServiceImpl implements PolicyCancellationService 
         return updatedPolicy;
     }
 
+    //Method to delete policy of given ID
     public void deletePolicy(long policyId) throws Exception {
         cancellationPolicyRepository.deleteById(policyId);
     }

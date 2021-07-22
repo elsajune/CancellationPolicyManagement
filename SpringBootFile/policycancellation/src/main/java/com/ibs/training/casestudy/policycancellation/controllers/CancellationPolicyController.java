@@ -43,12 +43,16 @@ public class CancellationPolicyController {
 
     @PutMapping("/cancellationpolicies/{id}")
     public ResponseEntity<CancellationPolicy> updateCancellationPolicy(@PathVariable("id") long policyId, @RequestBody CancellationPolicy editedPolicy) {
-        Optional<CancellationPolicy> policy = policyCancellationServiceImpl.updatePolicy(policyId, editedPolicy);
-        if (policy.isPresent()) {
-            CancellationPolicy updatedPolicy = policy.get();
-            return new ResponseEntity<>(updatedPolicy, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        try {
+            Optional<CancellationPolicy> policy = policyCancellationServiceImpl.updatePolicy(policyId, editedPolicy);
+            if (policy.isPresent()) {
+                CancellationPolicy updatedPolicy = policy.get();
+                return new ResponseEntity<>(updatedPolicy, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

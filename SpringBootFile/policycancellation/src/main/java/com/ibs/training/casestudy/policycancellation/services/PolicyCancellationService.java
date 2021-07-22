@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface PolicyCancellationService {
     CancellationPolicy addCancellationPolicy(CancellationPolicy newPolicy) throws Exception;
     List<CancellationPolicy> retrievePolicies() throws Exception ;
-    Optional<CancellationPolicy> updatePolicy(long policyId, CancellationPolicy editedPolicy);
+    Optional<CancellationPolicy> updatePolicy(long policyId, CancellationPolicy editedPolicy) throws Exception;
     void deletePolicy(long policyId) throws Exception;
 
 }
